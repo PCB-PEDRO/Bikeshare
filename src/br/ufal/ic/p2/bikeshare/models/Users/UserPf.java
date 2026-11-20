@@ -1,4 +1,4 @@
-package br.ufal.ic.p2.bikeshare.models;
+package br.ufal.ic.p2.bikeshare.models.Users;
 
 public class UserPf extends User{
 

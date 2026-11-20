@@ -3,7 +3,7 @@ package br.ufal.ic.p2.bikeshare.controller;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdNaoNuloException;
-import br.ufal.ic.p2.bikeshare.models.User;
+import br.ufal.ic.p2.bikeshare.models.Users.User;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;

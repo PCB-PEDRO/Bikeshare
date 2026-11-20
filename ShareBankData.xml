@@ -2,26 +2,30 @@
 <java version="26.0.2.1" class="java.beans.XMLDecoder">
  <object class="br.ufal.ic.p2.bikeshare.controller.DataSave" id="DataSave0">
   <void property="proximoid">
-   <int>8</int>
+   <int>4</int>
   </void>
   <void property="usuarios">
    <void method="put">
     <string>U1</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPf">
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
      <void property="cpf">
-      <string>111.222.333-44</string>
+      <string>100.200.300-40</string>
      </void>
      <void property="email">
-      <string>ana@exemplo.com</string>
+      <string>joana@exemplo.com</string>
      </void>
      <void property="estado">
       <string>ativo</string>
      </void>
      <void property="metodoPagamento">
-      <string>nenhum</string>
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.NoPay">
+       <void property="tipo">
+        <string>nenhum</string>
+       </void>
+      </object>
      </void>
      <void property="nome">
-      <string>Ana Souza</string>
+      <string>Joana Prado</string>
      </void>
      <void property="plano">
       <string>avulso</string>
@@ -36,30 +40,34 @@
    </void>
    <void method="put">
     <string>U2</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPj">
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPj">
      <void property="cnpj">
-      <string>12.345.678/0001-99</string>
+      <string>11.222.333/0001-44</string>
      </void>
      <void property="email">
-      <string>contato@bikecorp.com</string>
+      <string>loja@exemplo.com</string>
      </void>
      <void property="estado">
       <string>ativo</string>
      </void>
      <void property="metodoPagamento">
-      <string>nenhum</string>
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.NoPay">
+       <void property="tipo">
+        <string>nenhum</string>
+       </void>
+      </object>
      </void>
      <void property="nome">
-      <string>Bike Corp Ltda</string>
+      <string>Loja Bikes ME</string>
      </void>
      <void property="plano">
       <string>avulso</string>
      </void>
      <void property="razao">
-      <string>Bike Corp Ltda</string>
+      <string>Loja Bikes Comercio ME</string>
      </void>
      <void property="senha">
-      <string>senha123</string>
+      <string>654321</string>
      </void>
      <void property="tipo">
       <string>pessoaJuridica</string>
@@ -68,158 +76,34 @@
    </void>
    <void method="put">
     <string>U3</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPf">
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
      <void property="cpf">
-      <string>222.333.444-55</string>
+      <string>100.200.300-41</string>
      </void>
      <void property="email">
-      <string>carlos@exemplo.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="mensalidade">
-      <double>50.0</double>
-     </void>
-     <void property="metodoPagamento">
-      <string>nenhum</string>
-     </void>
-     <void property="nome">
-      <string>Carlos Lima</string>
-     </void>
-     <void property="plano">
-      <string>assinante</string>
-     </void>
-     <void property="senha">
-      <string>abc123</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaFisica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
-    <string>U4</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPj">
-     <void property="cnpj">
-      <string>98.765.432/0001-11</string>
-     </void>
-     <void property="email">
-      <string>frota@exemplo.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="mensalidade">
-      <double>120.5</double>
-     </void>
-     <void property="metodoPagamento">
-      <string>nenhum</string>
-     </void>
-     <void property="nome">
-      <string>Frota SA</string>
-     </void>
-     <void property="plano">
-      <string>assinante</string>
-     </void>
-     <void property="razao">
-      <string>Frota SA de Logistica</string>
-     </void>
-     <void property="senha">
-      <string>segredo1</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaJuridica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
-    <string>U5</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPf">
-     <void property="cpf">
-      <string>888.999.000-11</string>
-     </void>
-     <void property="email">
-      <string>duda@exemplo.com</string>
+      <string>joana2@exemplo.com</string>
      </void>
      <void property="estado">
       <string>ativo</string>
      </void>
      <void property="metodoPagamento">
-      <string>nenhum</string>
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.NoPay">
+       <void property="tipo">
+        <string>nenhum</string>
+       </void>
+      </object>
      </void>
      <void property="nome">
-      <string>Duda Reis</string>
+      <string>Joana Prado</string>
      </void>
      <void property="plano">
       <string>avulso</string>
      </void>
      <void property="senha">
-      <string>123456</string>
+      <string>111111</string>
      </void>
      <void property="tipo">
       <string>pessoaFisica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
-    <string>U6</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPf">
-     <void property="cpf">
-      <string>010.020.030-40</string>
-     </void>
-     <void property="email">
-      <string>eva@exemplo.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="metodoPagamento">
-      <string>nenhum</string>
-     </void>
-     <void property="nome">
-      <string>Eva Souza</string>
-     </void>
-     <void property="plano">
-      <string>assinante</string>
-     </void>
-     <void property="senha">
-      <string>123456</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaFisica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
-    <string>U7</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.UserPj">
-     <void property="cnpj">
-      <string>66.666.666/0001-66</string>
-     </void>
-     <void property="email">
-      <string>pedal@exemplo.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="metodoPagamento">
-      <string>nenhum</string>
-     </void>
-     <void property="nome">
-      <string>Pedal Ltda</string>
-     </void>
-     <void property="plano">
-      <string>avulso</string>
-     </void>
-     <void property="razao">
-      <string>Pedal Comercio Ltda</string>
-     </void>
-     <void property="senha">
-      <string>123456</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaJuridica</string>
      </void>
     </object>
    </void>

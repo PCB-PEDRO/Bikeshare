@@ -50,12 +50,12 @@ public class Facade {
     // US2 - Consulta de usuario
     // =====================================================================
 
-    public String getAtributoUsuario(String usuario, String atributo) throws UsuarioNaoExisteException, IdNaoNuloException, NaoPfException, AtributoNaoExisteException, NaoPjException, PlanoSemMensalidadeException {
+    public String getAtributoUsuario(String usuario, String atributo) throws UsuarioNaoExisteException, IdNaoNuloException, NaoPfException, AtributoNaoExisteException, NaoPjException, PlanoSemMensalidadeException, NaoCartaoException, NaoSaldoException, NaoPixException {
         return userController.getAtributoUsuario(usuario,atributo,null,null, null);
     }
 
-    public String getUsuarioPorEmail(String email) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getUsuarioPorEmail(String email) throws UsuarioNaoExisteException, EmailCadastradoException, EmailNaoNuloException, EmailIvalidoException {
+        return userController.getUserEmail(email);
     }
 
     // =====================================================================

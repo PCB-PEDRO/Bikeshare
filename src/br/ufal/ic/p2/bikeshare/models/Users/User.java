@@ -1,7 +1,9 @@
-package br.ufal.ic.p2.bikeshare.models;
+package br.ufal.ic.p2.bikeshare.models.Users;
 
 import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPfException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPjException;
+import br.ufal.ic.p2.bikeshare.models.pay.NoPay;
+import br.ufal.ic.p2.bikeshare.models.pay.Payment;
 
 public abstract class User{
 
@@ -12,7 +14,9 @@ public abstract class User{
     private String plano;
     private double mensalidade;
     private String estado;
-    private String metodoPagamento;
+    private Payment metodoPagamento;
+    private String aluguelAtivo;
+    private double totalPendencias;
 
     public User(String nome, String email, String senha, String tipo, String plano, double mensalidade) {
         this.nome = nome;
@@ -22,7 +26,9 @@ public abstract class User{
         this.plano = plano;
         this.mensalidade = mensalidade;
         this.estado ="ativo";
-        this.metodoPagamento = "nenhum";
+        this.metodoPagamento = new NoPay("nenhum");
+        this.aluguelAtivo = null;
+        this.totalPendencias = 0.0;
     }
 
     public String getNome() {
@@ -81,12 +87,28 @@ public abstract class User{
         this.estado = estado;
     }
 
-    public String getMetodoPagamento() {
+    public Payment getMetodoPagamento() {
         return metodoPagamento;
     }
 
-    public void setMetodoPagamento(String metodoPagamento) {
+    public void setMetodoPagamento(Payment metodoPagamento) {
         this.metodoPagamento = metodoPagamento;
+    }
+
+    public String getAluguelAtivo() {
+        return aluguelAtivo;
+    }
+
+    public void setAluguelAtivo(String aluguelAtivo) {
+        this.aluguelAtivo = aluguelAtivo;
+    }
+
+    public double getTotalPendencias() {
+        return totalPendencias;
+    }
+
+    public void setTotalPendencias(double totalPendencias) {
+        this.totalPendencias = totalPendencias;
     }
 
     public String obterCpf() throws NaoPfException {

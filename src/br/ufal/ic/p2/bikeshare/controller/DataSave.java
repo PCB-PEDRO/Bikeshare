@@ -1,6 +1,6 @@
 package br.ufal.ic.p2.bikeshare.controller;
 
-import br.ufal.ic.p2.bikeshare.models.User;
+import br.ufal.ic.p2.bikeshare.models.Users.User;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
