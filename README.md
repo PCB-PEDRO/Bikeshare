@@ -41,7 +41,7 @@ Está fora do escopo: qualquer interface gráfica ou web, integração com um ga
 | **Estado da bicicleta** | Condição operacional da bicicleta: disponível, em uso, em manutenção ou removida. |
 | **Estado do aluguel** | Condição de uma corrida: em andamento, finalizada, cancelada ou expirada. |
 | **Bicicleta convencional / elétrica** | Os dois tipos fixos de bicicleta suportados pelo sistema; a elétrica possui nível de bateria e cobrança adicional por minuto. |
-| **Usuário pessoa física / jurídica** | Os dois tipos fixos de usuário; pessoa física se identifica por CPF, pessoa jurídica por CNPJ/razão social e pode ter fatura consolidada. |
+| **Usuário pessoa física / jurídica** | Os dois tipos fixos de usuário; pessoa física se identifica por cpf, pessoa jurídica por CNPJ/razão social e pode ter fatura consolidada. |
 | **Método de pagamento** | Forma pela qual o usuário paga suas cobranças: cartão, Pix ou saldo pré-carregado. |
 
 ---

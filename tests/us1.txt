@@ -48,7 +48,7 @@ expectError "Email nao pode ser nulo." criarUsuario nome="X" email="" senha="123
 expectError "Email invalido." criarUsuario nome="X" email="xexemplo.com" senha="123456" tipo=pessoaFisica cpf=111.222.333-44
 expectError "Senha nao pode ser nula." criarUsuario nome="X" email="x@x.com" senha="" tipo=pessoaFisica cpf=111.222.333-44
 expectError "Tipo invalido." criarUsuario nome="X" email="x2@x.com" senha="123456" tipo=abc cpf=111.222.333-44
-expectError "CPF nao pode ser nulo." criarUsuario nome="X" email="x3@x.com" senha="123456" tipo=pessoaFisica cpf=""
+expectError "cpf nao pode ser nulo." criarUsuario nome="X" email="x3@x.com" senha="123456" tipo=pessoaFisica cpf=""
 expectError "Email ja cadastrado." criarUsuario nome="Outra Ana" email="ana@exemplo.com" senha="000000" tipo=pessoaFisica cpf=333.444.555-66
 
 # ---- erros de validacao (pessoa juridica) ----

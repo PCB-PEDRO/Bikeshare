@@ -1,9 +1,30 @@
 package br.ufal.ic.p2.bikeshare;
 
+import br.ufal.ic.p2.bikeshare.controller.DataSystem;
+import br.ufal.ic.p2.bikeshare.controller.UserController;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPfException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPjException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.PlanoSemMensalidadeException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNegativaException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNumeroException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.AtributoNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.PlanoInvalidoException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.TipoInvalidoException;
+
 /**
  Facade
  */
 public class Facade {
+    private DataSystem data;
+    private UserController userController;
+
+    public Facade(){
+        this.data = new DataSystem();
+        this.userController = new UserController(data);
+    }
 
     private static final String AINDA_NAO_IMPLEMENTADO = "Ainda não implementado.";
 
@@ -11,30 +32,28 @@ public class Facade {
     // US1 - Cadastro de usuario
     // =====================================================================
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpfOuCnpj) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpfOuCnpj) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException {
+        return userController.criarUsuario(nome, email, senha, tipo, cpfOuCnpj);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException {
+        return userController.criarUsuario(nome, email, senha, tipo, cnpj, razaoSocial);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf,
-                                String plano, String mensalidade) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String mensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException {
+        return userController.criarUsuario(nome, email, senha, tipo, cpf, plano, mensalidade);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj,
-                                String razaoSocial, String plano, String mensalidade) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String mensalidade) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException {
+        return userController.criarUsuario(nome, email, senha, tipo, cnpj, razaoSocial, plano, mensalidade);
     }
 
     // =====================================================================
     // US2 - Consulta de usuario
     // =====================================================================
 
-    public String getAtributoUsuario(String usuario, String atributo) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getAtributoUsuario(String usuario, String atributo) throws UsuarioNaoExisteException, IdNaoNuloException, NaoPfException, AtributoNaoExisteException, NaoPjException, PlanoSemMensalidadeException {
+        return userController.getAtributoUsuario(usuario,atributo,null,null, null);
     }
 
     public String getUsuarioPorEmail(String email) {
@@ -194,7 +213,7 @@ public class Facade {
     // =====================================================================
 
     public void zerarSistema() {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+        data.zerarSistema();
     }
 
     public void encerrarSistema() {
