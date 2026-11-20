@@ -89,28 +89,32 @@ public abstract class User{
         this.metodoPagamento = metodoPagamento;
     }
 
-    public String getCpf() throws NaoPfException {
+    public String obterCpf() throws NaoPfException {
         throw new NaoPfException();
     }
 
-    public void setCpf(String cpf) throws NaoPfException {
+    public void attCpf(String cpf) throws NaoPfException {
         throw new NaoPfException();
     }
 
-    public String getCnpj() throws NaoPjException {
+    public String obterCnpj() throws NaoPjException {
         throw new NaoPjException();
     }
 
-    public void setCnpj(String cnpj) throws NaoPjException {
+    public void attCnpj(String cnpj) throws NaoPjException {
         throw new NaoPjException();
     }
 
-    public String getRazao() throws NaoPjException {
+    public String obterRazao() throws NaoPjException {
         throw new NaoPjException();
     }
 
-    public void setRazao(String razao) throws NaoPjException {
+    public void attRazao(String razao) throws NaoPjException {
         throw new NaoPjException();
     }
+
+    //xml
+
+    public User(){ }
 
 }

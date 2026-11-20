@@ -2,10 +2,8 @@ package br.ufal.ic.p2.bikeshare;
 
 import br.ufal.ic.p2.bikeshare.controller.DataSystem;
 import br.ufal.ic.p2.bikeshare.controller.UserController;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPfException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPjException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.PlanoSemMensalidadeException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
+import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNegativaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNumeroException;
@@ -21,7 +19,7 @@ public class Facade {
     private DataSystem data;
     private UserController userController;
 
-    public Facade(){
+    public Facade() throws PersistenciaException {
         this.data = new DataSystem();
         this.userController = new UserController(data);
     }
@@ -32,19 +30,19 @@ public class Facade {
     // US1 - Cadastro de usuario
     // =====================================================================
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpfOuCnpj) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpfOuCnpj) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
         return userController.criarUsuario(nome, email, senha, tipo, cpfOuCnpj);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
         return userController.criarUsuario(nome, email, senha, tipo, cnpj, razaoSocial);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String mensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String mensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
         return userController.criarUsuario(nome, email, senha, tipo, cpf, plano, mensalidade);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String mensalidade) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String mensalidade) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
         return userController.criarUsuario(nome, email, senha, tipo, cnpj, razaoSocial, plano, mensalidade);
     }
 
@@ -212,11 +210,11 @@ public class Facade {
     // Ciclo de vida do sistema
     // =====================================================================
 
-    public void zerarSistema() {
+    public void zerarSistema() throws PersistenciaException {
         data.zerarSistema();
     }
 
-    public void encerrarSistema() {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void encerrarSistema() throws PersistenciaException {
+        data.salvarDados();
     }
 }

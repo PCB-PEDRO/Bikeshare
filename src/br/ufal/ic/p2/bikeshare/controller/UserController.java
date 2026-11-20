@@ -1,9 +1,6 @@
 package br.ufal.ic.p2.bikeshare.controller;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPfException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPjException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.PlanoSemMensalidadeException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNegativaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNumeroException;
@@ -23,16 +20,16 @@ public class UserController {
         this.data = data;
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException {
-        validarDados( nome, email, senha, tipo, cpf,"pessoaFisica");
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
+        email = validarDados( nome, email, senha, tipo, cpf,"pessoaFisica");
         User novo = new UserPf( nome, email, senha, tipo, cpf, "avulso", 0.0);
         String id = data.addUser(novo);
 
         return id;
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, RazaoNaoNuloException, EmailIvalidoException {
-        validarDados( nome, email, senha, tipo, cnpj, "pessoaJuridica");
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, RazaoNaoNuloException, EmailIvalidoException, EmailCadastradoException {
+        email = validarDados( nome, email, senha, tipo, cnpj, "pessoaJuridica");
         ValidadorUtils.validaString(razaoSocial, RazaoNaoNuloException::new);
 
         User novo = new UserPj( nome, email, senha, tipo, cnpj, razaoSocial, "avulso", 0.0);
@@ -41,10 +38,9 @@ public class UserController {
         return id;
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String smensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException {
-        validarDados(nome, email, senha, tipo, cpf, "pessoaFisica");
-        validarPlano(plano);
-        double mensalidade = ValidadorUtils.conversaoDouble(smensalidade, MensalidadeNaoNumeroException::new, MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String smensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
+        email = validarDados(nome, email, senha, tipo, cpf, "pessoaFisica");
+        double mensalidade = validarPlano(plano, smensalidade);
 
         User novo = new UserPf( nome, email, senha, tipo, cpf, plano, mensalidade);
         String id = data.addUser(novo);
@@ -52,11 +48,11 @@ public class UserController {
         return id;
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String smensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, RazaoNaoNuloException, PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException {
-        validarDados(nome,email,senha,tipo,cnpj, "pessoaJuridica");
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String smensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, RazaoNaoNuloException, PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
+        email = validarDados(nome,email,senha,tipo,cnpj, "pessoaJuridica");
         ValidadorUtils.validaString(razaoSocial, RazaoNaoNuloException::new);
-        validarPlano(plano);
-        double mensalidade = ValidadorUtils.conversaoDouble(smensalidade, MensalidadeNaoNumeroException::new, MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
+        double mensalidade = validarPlano(plano, smensalidade);
+
 
         User novo = new UserPj(nome,email,senha,tipo,cnpj, razaoSocial, plano, mensalidade);
         String id = data.addUser(novo);
@@ -83,26 +79,29 @@ public class UserController {
             case "plano":
                 return consulta.getPlano();
             case "mensalidade":
-                if(consulta.getMensalidade() == 0.0){
+                if(consulta.getPlano().equals("avulso")){
                     throw new PlanoSemMensalidadeException();
                 }
                 return ValidadorUtils.formatarMoeda(consulta.getMensalidade());
             case "cpf":
-                return consulta.getCpf();
+                return consulta.obterCpf();
             case "cnpj":
-                return consulta.getCnpj();
+                return consulta.obterCnpj();
             case "razaoSocial":
-                return consulta.getRazao();
+                return consulta.obterRazao();
             default:
                 throw new AtributoNaoExisteException();
         }
     }
 
-    private void validarDados(String nome, String email, String senha, String tipo, String cpfOuCnpj, String tipoEsperado) throws NomeNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, CnpjNaoNuloException, TipoInvalidoException, EmailIvalidoException {
+    private String validarDados(String nome, String email, String senha, String tipo, String cpfOuCnpj, String tipoEsperado) throws NomeNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, CnpjNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
 
         ValidadorUtils.validaString(nome,NomeNaoNuloException::new);
         ValidadorUtils.validaString(email, EmailNaoNuloException::new);
-        ValidadorUtils.validaEmail(email);
+        email = ValidadorUtils.validaEmail(email);
+        if(data.getUserEmail(email) != null){
+            throw new EmailCadastradoException();
+        }
         ValidadorUtils.validaString(senha, SenhaNaoNuloException::new);
         if(tipo.equals("pessoaFisica")){
             ValidadorUtils.validaString(cpfOuCnpj, CpfNaoNuloException::new);
@@ -114,14 +113,28 @@ public class UserController {
         if(!tipo.equals(tipoEsperado)){
             throw new TipoInvalidoException();
         }
+
+        return email;
     }
 
-    private void validarPlano(String plano) throws PlanoNaoNuloException, PlanoInvalidoException {
-        ValidadorUtils.validaString(plano,PlanoNaoNuloException::new);
-        if(!plano.equals("avulso") && !plano.equals("assinante")){
+    private double validarPlano(String plano, String smensalidade) throws PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, PlanoSemMensalidadeException {
+        //ValidadorUtils.validaString(plano,PlanoNaoNuloException::new);
+
+        if(plano.equals("avulso")){
+
+            if (smensalidade != null && !smensalidade.isBlank() && !smensalidade.equals("0.0") && !smensalidade.equals("0")){
+
+                throw new PlanoSemMensalidadeException();
+            }
+
+            return 0.0;
+
+        } else if(plano.equals("assinante")){
+
+            return ValidadorUtils.conversaoDouble(smensalidade, MensalidadeNaoNumeroException::new, MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
+
+        } else {
             throw new PlanoInvalidoException();
         }
     }
-
-
 }

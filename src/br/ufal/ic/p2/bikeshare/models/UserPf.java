@@ -11,13 +11,27 @@ public class UserPf extends User{
 
 
     @Override
-    public String getCpf() {
+    public String obterCpf() {
         return cpf;
     }
 
     @Override
+    public void attCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    //XML
+
+    public UserPf(){super();}
+
+    public String getCpf() {
+        return cpf;
+    }
+
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
+
 
 }

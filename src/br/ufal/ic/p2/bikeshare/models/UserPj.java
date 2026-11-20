@@ -11,22 +11,31 @@ public class UserPj extends User{
     }
 
     @Override
-    public String getCnpj() {
+    public String obterCnpj() {
         return cnpj;
     }
 
     @Override
-    public void setCnpj(String cnpj) {
+    public void attCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
 
     @Override
-    public String getRazao() {
+    public String obterRazao() {
         return razao;
     }
 
     @Override
-    public void setRazao(String razao) {
+    public void attRazao(String razao) {
         this.razao = razao;
     }
+
+    //xml
+
+    public UserPj(){super();}
+
+    public String getCnpj() { return cnpj; }
+    public void setCnpj(String cnpj) { this.cnpj = cnpj; }
+    public String getRazao() { return razao; }
+    public void setRazao(String razao) { this.razao = razao; }
 }

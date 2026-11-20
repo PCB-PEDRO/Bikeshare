@@ -21,20 +21,22 @@ public class ValidadorUtils {
         } catch (NumberFormatException e) {
             throw numeroException.get();
         }
-        if (num <= 0) {
+        if (num < 0) {
             throw negativoException.get();
         }
         return num;
     }
 
-     public static String formatarMoeda(double valor) {
+    public static String formatarMoeda(double valor) {
         return String.format("%.2f", valor).replace(".", ",");
     }
 
-    public static void validaEmail(String email) throws EmailIvalidoException {
-        if (!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+    public static String validaEmail(String email) throws EmailIvalidoException {
+        String emailNormalizado = email.trim().toLowerCase();
+        if (!emailNormalizado.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
             throw new EmailIvalidoException();
         }
+        return emailNormalizado;
     }
 
 }
