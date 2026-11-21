@@ -74,6 +74,14 @@ public class DataSystem {
         return null;
     }
 
+    public void removerUser(String id) throws UsuarioNaoExisteException {
+        User remove = usuarios.remove(id);
+
+        if (remove == null) {
+            throw new UsuarioNaoExisteException();
+        }
+    }
+
     // persistencia xml
 
     public void salvarDados() throws PersistenciaException {

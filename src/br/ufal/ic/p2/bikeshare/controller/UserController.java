@@ -231,6 +231,15 @@ public class UserController {
         consulta.setMetodoPagamento(novo);
     }
 
+    public void removerUsuario(String id) throws UsuarioNaoExisteException, IdNaoNuloException, AluguelAtivoException {
+        User usuario = data.obterUsuario(id);
+
+        if(usuario.getAluguelAtivo() != null){
+            throw new AluguelAtivoException();
+        } else{
+            data.removerUser(id);
+        }
+    }
 
     private String validarDados(String nome, String email, String senha, String tipo, String cpfOuCnpj, String tipoEsperado) throws NomeNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, CnpjNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
 

@@ -74,8 +74,8 @@ public class Facade {
     // US4 - Remocao de usuario
     // =====================================================================
 
-    public void removerUsuario(String usuario) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void removerUsuario(String usuario) throws UsuarioNaoExisteException, IdNaoNuloException, AluguelAtivoException {
+        userController.removerUsuario( usuario);
     }
 
     // =====================================================================

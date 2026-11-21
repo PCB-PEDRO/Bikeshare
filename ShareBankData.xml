@@ -6,116 +6,32 @@
   </void>
   <void property="usuarios">
    <void method="put">
-    <string>U1</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
-     <void property="cpf">
-      <string>100.100.100-10</string>
-     </void>
-     <void property="email">
-      <string>pedroh@exemplo.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="metodoPagamento">
-      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayBalance">
-       <void property="saldo">
-        <double>175.5</double>
-       </void>
-       <void property="tipo">
-        <string>saldoPreCarregado</string>
-       </void>
-      </object>
-     </void>
-     <void property="nome">
-      <string>Pedro Henrique Alves</string>
-     </void>
-     <void property="plano">
-      <string>avulso</string>
-     </void>
-     <void property="saldo">
-      <double>175.5</double>
-     </void>
-     <void property="senha">
-      <string>novaSenha1</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaFisica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
-    <string>U2</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
-     <void property="cpf">
-      <string>200.200.200-20</string>
-     </void>
-     <void property="email">
-      <string>rita@exemplo.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="metodoPagamento">
-      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayCard">
-       <void property="numero">
-        <string>5555-6666-7777-8888</string>
-       </void>
-       <void property="tipo">
-        <string>cartao</string>
-       </void>
-       <void property="validade">
-        <string>02/2031</string>
-       </void>
-      </object>
-     </void>
-     <void property="nome">
-      <string>Rita Nunes</string>
-     </void>
-     <void property="plano">
-      <string>avulso</string>
-     </void>
-     <void property="senha">
-      <string>abcdef</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaFisica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
     <string>U3</string>
     <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
      <void property="cpf">
-      <string>300.100.200-30</string>
+      <string>700.600.500-40</string>
      </void>
      <void property="email">
-      <string>tiago@exemplo.com</string>
+      <string>fernanda@exemplo.com</string>
      </void>
      <void property="estado">
       <string>ativo</string>
      </void>
      <void property="metodoPagamento">
-      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayBalance">
-       <void property="saldo">
-        <double>40.0</double>
-       </void>
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.NoPay">
        <void property="tipo">
-        <string>saldoPreCarregado</string>
+        <string>nenhum</string>
        </void>
       </object>
      </void>
      <void property="nome">
-      <string>Tiago Sena</string>
+      <string>Fernanda Melo</string>
      </void>
      <void property="plano">
       <string>avulso</string>
      </void>
-     <void property="saldo">
-      <double>40.0</double>
-     </void>
      <void property="senha">
-      <string>123456</string>
+      <string>112233</string>
      </void>
      <void property="tipo">
       <string>pessoaFisica</string>
@@ -124,57 +40,15 @@
    </void>
    <void method="put">
     <string>U4</string>
-    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPj">
-     <void property="cnpj">
-      <string>77.777.777/0001-77</string>
-     </void>
-     <void property="email">
-      <string>brasil@cicla.com</string>
-     </void>
-     <void property="estado">
-      <string>ativo</string>
-     </void>
-     <void property="mensalidade">
-      <double>30.0</double>
-     </void>
-     <void property="metodoPagamento">
-      <object class="br.ufal.ic.p2.bikeshare.models.pay.NoPay">
-       <void property="tipo">
-        <string>nenhum</string>
-       </void>
-      </object>
-     </void>
-     <void property="nome">
-      <string>Cicla Brasil SA</string>
-     </void>
-     <void property="plano">
-      <string>assinante</string>
-     </void>
-     <void property="razao">
-      <string>Cicla Servicos SA</string>
-     </void>
-     <void property="senha">
-      <string>x9</string>
-     </void>
-     <void property="tipo">
-      <string>pessoaJuridica</string>
-     </void>
-    </object>
-   </void>
-   <void method="put">
-    <string>U5</string>
     <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
      <void property="cpf">
-      <string>300.200.100-90</string>
+      <string>800.700.600-50</string>
      </void>
      <void property="email">
-      <string>lia@exemplo.com</string>
+      <string>julia@exemplo.com</string>
      </void>
      <void property="estado">
       <string>ativo</string>
-     </void>
-     <void property="mensalidade">
-      <double>30.0</double>
      </void>
      <void property="metodoPagamento">
       <object class="br.ufal.ic.p2.bikeshare.models.pay.NoPay">
@@ -184,13 +58,13 @@
       </object>
      </void>
      <void property="nome">
-      <string>Lia Pontes</string>
+      <string>Julia Nova</string>
      </void>
      <void property="plano">
-      <string>assinante</string>
+      <string>avulso</string>
      </void>
      <void property="senha">
-      <string>123456</string>
+      <string>445566</string>
      </void>
      <void property="tipo">
       <string>pessoaFisica</string>
@@ -201,10 +75,10 @@
     <string>U6</string>
     <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
      <void property="cpf">
-      <string>310.210.110-91</string>
+      <string>111.000.222-33</string>
      </void>
      <void property="email">
-      <string>cicla@exemplo.com</string>
+      <string>gil@exemplo.com</string>
      </void>
      <void property="estado">
       <string>ativo</string>
@@ -217,7 +91,7 @@
       </object>
      </void>
      <void property="nome">
-      <string>Novo Dono</string>
+      <string>Gil Prado</string>
      </void>
      <void property="plano">
       <string>avulso</string>
