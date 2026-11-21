@@ -1,6 +1,7 @@
 package br.ufal.ic.p2.bikeshare;
 
-import br.ufal.ic.p2.bikeshare.controller.DataSystem;
+import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
+import br.ufal.ic.p2.bikeshare.controller.EstacaoController;
 import br.ufal.ic.p2.bikeshare.controller.UserController;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
 import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
@@ -14,10 +15,12 @@ import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.*;
 public class Facade {
     private DataSystem data;
     private UserController userController;
+    private EstacaoController estacaoController;
 
     public Facade() throws PersistenciaException {
         this.data = new DataSystem();
         this.userController = new UserController(data);
+        this.estacaoController = new EstacaoController(data);
     }
 
     private static final String AINDA_NAO_IMPLEMENTADO = "Ainda não implementado.";
@@ -82,8 +85,8 @@ public class Facade {
     // US5 - Cadastro de estacao
     // =====================================================================
 
-    public String criarEstacao(String nome, String endereco, String capacidade) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String criarEstacao(String nome, String endereco, String capacidade) throws NomeNaoNuloException, CapacidadeNaoNumeroException, CapacidadeNaoNegativaException, CapacidadeNaoNulaException, EnderecoNaoNuloException {
+        return estacaoController.criarEstacao(nome, endereco, capacidade);
     }
 
     // =====================================================================
@@ -110,12 +113,12 @@ public class Facade {
     // US7 - Consulta de disponibilidade
     // =====================================================================
 
-    public String getBicicletasDisponiveis(String estacao) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getBicicletasDisponiveis(String estacao) throws EstacaoNaoExisteException, IdEstacaoNulaException {
+        return estacaoController.getBicicletasDisponiveis(estacao);
     }
 
-    public String getVagasDisponiveis(String estacao) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getVagasDisponiveis(String estacao) throws EstacaoNaoExisteException, IdEstacaoNulaException {
+        return estacaoController.obterVagasDisponiveis(estacao);
     }
 
     public String getEstadoBicicleta(String bicicleta) {

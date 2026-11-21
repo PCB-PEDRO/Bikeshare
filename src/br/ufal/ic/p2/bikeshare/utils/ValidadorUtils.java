@@ -1,5 +1,9 @@
 package br.ufal.ic.p2.bikeshare.utils;
 
+import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.CapacidadeNaoNulaException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.ValorNuloException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.CapacidadeNaoNegativaException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.CapacidadeNaoNumeroException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.ValidadeInvalidaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
 
@@ -53,6 +57,20 @@ public class ValidadorUtils {
         if (!validade.trim().matches("^(0[1-9]|1[0-2])/\\d{4}$")) {
             throw new ValidadeInvalidaException();
         }
+    }
+
+    public static int conversaoIntPositivo(String valor) throws CapacidadeNaoNulaException, CapacidadeNaoNumeroException, CapacidadeNaoNegativaException {
+        validaString(valor, CapacidadeNaoNulaException::new);
+        int num;
+        try {
+            num = Integer.parseInt(valor.trim());
+        } catch (NumberFormatException e) {
+            throw new CapacidadeNaoNumeroException();
+        }
+        if (num <= 0) {
+            throw new CapacidadeNaoNegativaException();
+        }
+        return num;
     }
 
 }

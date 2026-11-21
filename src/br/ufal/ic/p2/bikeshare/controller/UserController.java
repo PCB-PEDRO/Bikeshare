@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.bikeshare.controller;
 
+import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.*;
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     public String getAtributoUsuario(String usuario, String atributo, String valor1, String numero, String validade) throws UsuarioNaoExisteException, IdNaoNuloException, NaoPfException, NaoPjException, AtributoNaoExisteException, PlanoSemMensalidadeException, NaoPixException, NaoCartaoException, NaoSaldoException {
-        User consulta = data.queryUser(usuario);
+        User consulta = data.obterUsuario(usuario);
 
         switch (atributo){
             case "nome":
