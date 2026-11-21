@@ -5,12 +5,8 @@ import br.ufal.ic.p2.bikeshare.controller.UserController;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
 import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNegativaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.MensalidadeNaoNumeroException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.AtributoNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.PlanoInvalidoException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.TipoInvalidoException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.*;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.*;
 
 /**
  Facade
@@ -62,16 +58,16 @@ public class Facade {
     // US3 - Alteracao de usuario (inclui metodo de pagamento)
     // =====================================================================
 
-    public void alterarUsuario(String usuario, String atributo, String valor) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void alterarUsuario(String usuario, String atributo, String valor) throws UsuarioNaoExisteException, ValorNuloException, AtributoInvalidoException, IdNaoNuloException, NaoPfException, AtributoNaoExisteException, ValorNaoNegativaException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, ValorNaoNumeroException, MensalidadeNaoNumeroException, NaoPjException, NomeNaoNuloException, EmailCadastradoException, EmailNaoNuloException, EmailIvalidoException, SenhaNaoNuloException, PlanoInvalidoException, AtributoNaoAlteraException, NaoSaldoException, MetodoPagamentoInvalidoException {
+        userController.alterarAtributos(usuario, atributo, valor);
     }
 
-    public void alterarUsuario(String usuario, String atributo, String valor1, String chave) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void alterarUsuario(String usuario, String atributo, String valor1, String chave) throws ValorNuloException, UsuarioNaoExisteException, AtributoInvalidoException, IdNaoNuloException, AtributoNaoExisteException, ChaveNaoNuloException, AtributoNaoAlteraException, MetodoPagamentoInvalidoException {
+        userController.alterarMetodoPix(usuario, atributo, valor1, chave);
     }
 
-    public void alterarUsuario(String usuario, String atributo, String valor1, String numero, String validade) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void alterarUsuario(String usuario, String atributo, String valor1, String numero, String validade) throws ValorNuloException, ValidadeNaoNulaException, UsuarioNaoExisteException, AtributoInvalidoException, IdNaoNuloException, AtributoNaoExisteException, CartaoNaoNuloException, AtributoNaoAlteraException, ValidadeInvalidaException, MetodoPagamentoInvalidoException {
+        userController.alterarMetodoCard(usuario, atributo, valor1, numero, validade);
     }
 
     // =====================================================================

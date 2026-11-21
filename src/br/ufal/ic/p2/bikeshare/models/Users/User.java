@@ -2,6 +2,7 @@ package br.ufal.ic.p2.bikeshare.models.Users;
 
 import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPfException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPjException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoSaldoException;
 import br.ufal.ic.p2.bikeshare.models.pay.NoPay;
 import br.ufal.ic.p2.bikeshare.models.pay.Payment;
 
@@ -17,6 +18,7 @@ public abstract class User{
     private Payment metodoPagamento;
     private String aluguelAtivo;
     private double totalPendencias;
+    private double saldo;
 
     public User(String nome, String email, String senha, String tipo, String plano, double mensalidade) {
         this.nome = nome;
@@ -29,6 +31,7 @@ public abstract class User{
         this.metodoPagamento = new NoPay("nenhum");
         this.aluguelAtivo = null;
         this.totalPendencias = 0.0;
+        this.saldo = 0.0;
     }
 
     public String getNome() {
@@ -135,7 +138,32 @@ public abstract class User{
         throw new NaoPjException();
     }
 
+    public double obterSaldo() throws NaoSaldoException {
+        if(getMetodoPagamento().getTipo().equals("saldoPreCarregado")){
+            return saldo;
+        }
+        else {
+            throw new NaoSaldoException();
+        }
+    }
+
+    public void attSaldo(double saldo) throws NaoSaldoException {
+
+        metodoPagamento.attSaldo(saldo);
+        this.saldo = saldo;
+
+    }
+
     //xml
+
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 
     public User(){ }
 

@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.bikeshare.utils;
 
+import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.ValidadeInvalidaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
 
 import java.util.function.Supplier;
@@ -27,6 +28,15 @@ public class ValidadorUtils {
         return num;
     }
 
+    public static <T1 extends Exception, T2 extends Exception, T3 extends Exception> double conversaoDoublePositivo(
+            String valor, Supplier<T1> numeroException, Supplier<T2> positivoException, Supplier<T3> nuloException) throws T1, T2, T3 {
+        double num = conversaoDouble(valor, numeroException, positivoException, nuloException);
+        if (num == 0) {
+            throw positivoException.get();
+        }
+        return num;
+    }
+
     public static String formatarMoeda(double valor) {
         return String.format("%.2f", valor).replace(".", ",");
     }
@@ -37,6 +47,12 @@ public class ValidadorUtils {
             throw new EmailIvalidoException();
         }
         return emailNormalizado;
+    }
+
+    public static void validaValidadeCartao(String validade) throws ValidadeInvalidaException {
+        if (!validade.trim().matches("^(0[1-9]|1[0-2])/\\d{4}$")) {
+            throw new ValidadeInvalidaException();
+        }
     }
 
 }

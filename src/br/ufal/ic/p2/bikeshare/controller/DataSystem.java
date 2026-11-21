@@ -50,6 +50,17 @@ public class DataSystem {
         salvarDados();
     }
 
+    public User obterUsuario(String id) throws IdNaoNuloException, UsuarioNaoExisteException {
+        if (id == null || id.isBlank()) {
+            throw new IdNaoNuloException();
+        }
+        User usuario = this.usuarios.get(id);
+        if (usuario == null) {
+            throw new UsuarioNaoExisteException();
+        }
+        return usuario;
+    }
+
     public String getUserEmail(String email){
 
         for (String id : usuarios.keySet()) {
