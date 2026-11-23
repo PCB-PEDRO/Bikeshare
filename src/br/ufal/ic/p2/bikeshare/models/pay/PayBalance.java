@@ -1,5 +1,8 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.SaldoInsuficienteException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.SemMetodoPagamentoException;
+
 public class PayBalance extends Payment{
 
     private Double saldo;
@@ -17,6 +20,15 @@ public class PayBalance extends Payment{
     @Override
     public void attSaldo(Double saldo){
         this.saldo = saldo;
+    }
+
+    @Override
+    public boolean validarParaAluguel() throws SaldoInsuficienteException {
+        if(this.saldo > 0){
+            return true;
+        }else {
+            throw new SaldoInsuficienteException();
+        }
     }
 
     //Xml

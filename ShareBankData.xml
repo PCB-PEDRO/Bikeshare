@@ -1,16 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="26.0.2.1" class="java.beans.XMLDecoder">
- <object class="br.ufal.ic.p2.bikeshare.controller.Data.DataSave">
+ <object class="br.ufal.ic.p2.bikeshare.controller.Data.DataSave" id="DataSave0">
+  <void property="alugueis">
+   <object class="java.util.LinkedHashMap">
+    <void method="put">
+     <string>A1</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>r1</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E1</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>10/3/2025 8:00</string>
+      </void>
+      <void property="usuario">
+       <string>U1</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>A2</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>be15</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E3</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>10/3/2025 8:10</string>
+      </void>
+      <void property="usuario">
+       <string>U2</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>A3</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>be80</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E3</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>10/3/2025 8:15</string>
+      </void>
+      <void property="usuario">
+       <string>U3</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>A4</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>r2</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E1</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>10/3/2025 9:00</string>
+      </void>
+      <void property="usuario">
+       <string>U5</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>A5</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>r3</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E2</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>29/2/2024 7:05</string>
+      </void>
+      <void property="usuario">
+       <string>U6</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>A6</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>r4</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E4</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>10/3/2025 11:00</string>
+      </void>
+      <void property="usuario">
+       <string>U7</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>A7</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel">
+      <void property="bicicleta">
+       <string>r9</string>
+      </void>
+      <void property="estacaoOrigem">
+       <string>E2</string>
+      </void>
+      <void property="estado">
+       <string>emAndamento</string>
+      </void>
+      <void property="inicio">
+       <string>11/3/2025 8:00</string>
+      </void>
+      <void property="usuario">
+       <string>U4</string>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
   <void property="bicicletas">
    <object class="java.util.LinkedHashMap">
     <void method="put">
-     <string>d1</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm" id="BikeNorm0">
+     <string>r1</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm">
       <void property="estacao">
-       <string>E1</string>
+       <string>nenhuma</string>
       </void>
       <void property="estado">
-       <string>disponivel</string>
+       <string>emUso</string>
       </void>
       <void property="tipo">
        <string>convencional</string>
@@ -18,13 +162,13 @@
      </object>
     </void>
     <void method="put">
-     <string>d2</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm" id="BikeNorm1">
+     <string>r2</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm">
       <void property="estacao">
-       <string>E1</string>
+       <string>nenhuma</string>
       </void>
       <void property="estado">
-       <string>disponivel</string>
+       <string>emUso</string>
       </void>
       <void property="tipo">
        <string>convencional</string>
@@ -32,27 +176,13 @@
      </object>
     </void>
     <void method="put">
-     <string>d3</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm" id="BikeNorm2">
-      <void property="estacao">
-       <string>E1</string>
-      </void>
-      <void property="estado">
-       <string>disponivel</string>
-      </void>
-      <void property="tipo">
-       <string>convencional</string>
-      </void>
-     </object>
-    </void>
-    <void method="put">
-     <string>bePouca</string>
+     <string>eletricaFraca</string>
      <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric" id="BIkeEletric0">
       <void property="bateria">
        <int>10</int>
       </void>
       <void property="estacao">
-       <string>E2</string>
+       <string>E1</string>
       </void>
       <void property="estado">
        <string>disponivel</string>
@@ -63,64 +193,13 @@
      </object>
     </void>
     <void method="put">
-     <string>beQuase</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric" id="BIkeEletric1">
-      <void property="bateria">
-       <int>14</int>
-      </void>
+     <string>r3</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm">
       <void property="estacao">
-       <string>E2</string>
+       <string>nenhuma</string>
       </void>
       <void property="estado">
-       <string>disponivel</string>
-      </void>
-      <void property="tipo">
-       <string>eletrica</string>
-      </void>
-     </object>
-    </void>
-    <void method="put">
-     <string>beLimite</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric" id="BIkeEletric2">
-      <void property="bateria">
-       <int>15</int>
-      </void>
-      <void property="estacao">
-       <string>E2</string>
-      </void>
-      <void property="estado">
-       <string>disponivel</string>
-      </void>
-      <void property="tipo">
-       <string>eletrica</string>
-      </void>
-     </object>
-    </void>
-    <void method="put">
-     <string>beMax</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric" id="BIkeEletric3">
-      <void property="bateria">
-       <int>80</int>
-      </void>
-      <void property="estacao">
-       <string>E2</string>
-      </void>
-      <void property="estado">
-       <string>disponivel</string>
-      </void>
-      <void property="tipo">
-       <string>eletrica</string>
-      </void>
-     </object>
-    </void>
-    <void method="put">
-     <string>bcNormal</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm" id="BikeNorm3">
-      <void property="estacao">
-       <string>E2</string>
-      </void>
-      <void property="estado">
-       <string>disponivel</string>
+       <string>emUso</string>
       </void>
       <void property="tipo">
        <string>convencional</string>
@@ -128,13 +207,78 @@
      </object>
     </void>
     <void method="put">
-     <string>d5</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm" id="BikeNorm4">
+     <string>be14</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric" id="BIkeEletric1">
+      <void property="bateria">
+       <int>14</int>
+      </void>
       <void property="estacao">
        <string>E3</string>
       </void>
       <void property="estado">
        <string>disponivel</string>
+      </void>
+      <void property="tipo">
+       <string>eletrica</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>be15</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric">
+      <void property="bateria">
+       <int>15</int>
+      </void>
+      <void property="estacao">
+       <string>nenhuma</string>
+      </void>
+      <void property="estado">
+       <string>emUso</string>
+      </void>
+      <void property="tipo">
+       <string>eletrica</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>be80</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric">
+      <void property="bateria">
+       <int>80</int>
+      </void>
+      <void property="estacao">
+       <string>nenhuma</string>
+      </void>
+      <void property="estado">
+       <string>emUso</string>
+      </void>
+      <void property="tipo">
+       <string>eletrica</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>r4</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm">
+      <void property="estacao">
+       <string>nenhuma</string>
+      </void>
+      <void property="estado">
+       <string>emUso</string>
+      </void>
+      <void property="tipo">
+       <string>convencional</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>r9</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm">
+      <void property="estacao">
+       <string>nenhuma</string>
+      </void>
+      <void property="estado">
+       <string>emUso</string>
       </void>
       <void property="tipo">
        <string>convencional</string>
@@ -150,83 +294,361 @@
      <object class="br.ufal.ic.p2.bikeshare.models.stations.Station" id="Station0">
       <void property="bicicletas">
        <void method="add">
-        <object idref="BikeNorm0"/>
-       </void>
-       <void method="add">
-        <object idref="BikeNorm1"/>
-       </void>
-       <void method="add">
-        <object idref="BikeNorm2"/>
+        <object idref="BIkeEletric0"/>
        </void>
       </void>
       <void property="capacidade">
        <int>4</int>
       </void>
       <void property="endereco">
-       <string>Rua Ana Sampaio Lins, 108</string>
+       <string>Avenida Dr. Antônio Gouveia, 1113</string>
       </void>
       <void property="nome">
-       <string>Estação Mirante da Santa Amélia</string>
+       <string>Estação Arte Pajuçara</string>
       </void>
      </object>
     </void>
     <void method="put">
      <string>E2</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.stations.Station">
+      <void property="capacidade">
+       <int>2</int>
+      </void>
+      <void property="endereco">
+       <string>Av. Tomás Espíndola</string>
+      </void>
+      <void property="nome">
+       <string>Estação Praça Centenário</string>
+      </void>
+     </object>
+    </void>
+    <void method="put">
+     <string>E3</string>
      <object class="br.ufal.ic.p2.bikeshare.models.stations.Station" id="Station1">
       <void property="bicicletas">
        <void method="add">
-        <object idref="BIkeEletric0"/>
-       </void>
-       <void method="add">
         <object idref="BIkeEletric1"/>
-       </void>
-       <void method="add">
-        <object idref="BIkeEletric2"/>
-       </void>
-       <void method="add">
-        <object idref="BIkeEletric3"/>
-       </void>
-       <void method="add">
-        <object idref="BikeNorm3"/>
        </void>
       </void>
       <void property="capacidade">
        <int>5</int>
       </void>
       <void property="endereco">
-       <string>Praça Gogó da Ema, 485</string>
+       <string>Av. Empresário Carlos da Silva Nogueira, 595</string>
       </void>
       <void property="nome">
-       <string>Estação Marco dos Corais</string>
+       <string>Estação Cascão Jatiúca</string>
       </void>
      </object>
     </void>
     <void method="put">
-     <string>E3</string>
-     <object class="br.ufal.ic.p2.bikeshare.models.stations.Station" id="Station2">
-      <void property="bicicletas">
-       <void method="add">
-        <object idref="BikeNorm4"/>
-       </void>
-      </void>
+     <string>E4</string>
+     <object class="br.ufal.ic.p2.bikeshare.models.stations.Station">
       <void property="capacidade">
        <int>2</int>
       </void>
       <void property="endereco">
-       <string>Fernão Velho</string>
+       <string>Serraria</string>
       </void>
       <void property="nome">
-       <string>Estação Trem do Mel</string>
+       <string>Estação Del Popolo</string>
       </void>
      </object>
     </void>
    </object>
   </void>
+  <void property="proximoIdAluguel">
+   <int>8</int>
+  </void>
   <void property="proximoIdEstacao">
-   <int>4</int>
+   <int>5</int>
   </void>
   <void property="proximoid">
-   <int>1</int>
+   <int>8</int>
+  </void>
+  <void property="usuarios">
+   <void method="put">
+    <string>U1</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
+     <void property="aluguelAtivo">
+      <string>A1</string>
+     </void>
+     <void property="cpf">
+      <string>111.111.111-11</string>
+     </void>
+     <void property="email">
+      <string>diego@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayPix">
+       <void property="chave">
+        <string>diego@pix.com</string>
+       </void>
+       <void property="tipo">
+        <string>pix</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Diego Farias</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaFisica</string>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <string>U2</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
+     <void property="aluguelAtivo">
+      <string>A2</string>
+     </void>
+     <void property="cpf">
+      <string>222.222.222-22</string>
+     </void>
+     <void property="email">
+      <string>elis@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayPix">
+       <void property="chave">
+        <string>elis@pix.com</string>
+       </void>
+       <void property="tipo">
+        <string>pix</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Elis Gomes</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaFisica</string>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <string>U3</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
+     <void property="aluguelAtivo">
+      <string>A3</string>
+     </void>
+     <void property="cpf">
+      <string>444.444.444-44</string>
+     </void>
+     <void property="email">
+      <string>gisele@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayPix">
+       <void property="chave">
+        <string>gisele@pix.com</string>
+       </void>
+       <void property="tipo">
+        <string>pix</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Gisele Prado</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaFisica</string>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <string>U4</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
+     <void property="aluguelAtivo">
+      <string>A7</string>
+     </void>
+     <void property="cpf">
+      <string>333.333.333-33</string>
+     </void>
+     <void property="email">
+      <string>fabio@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayPix">
+       <void property="chave">
+        <string>fabio@pix.com</string>
+       </void>
+       <void property="tipo">
+        <string>pix</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Fabio Nery</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaFisica</string>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <string>U5</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
+     <void property="aluguelAtivo">
+      <string>A4</string>
+     </void>
+     <void property="cpf">
+      <string>555.555.555-55</string>
+     </void>
+     <void property="email">
+      <string>heitor@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayBalance">
+       <void property="saldo">
+        <double>10.0</double>
+       </void>
+       <void property="tipo">
+        <string>saldoPreCarregado</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Heitor Lima</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="saldo">
+      <double>10.0</double>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaFisica</string>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <string>U6</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPf">
+     <void property="aluguelAtivo">
+      <string>A5</string>
+     </void>
+     <void property="cpf">
+      <string>666.666.666-66</string>
+     </void>
+     <void property="email">
+      <string>ines@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayCard">
+       <void property="numero">
+        <string>4444-3333-2222-1111</string>
+       </void>
+       <void property="tipo">
+        <string>cartao</string>
+       </void>
+       <void property="validade">
+        <string>10/2030</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Ines Rocha</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaFisica</string>
+     </void>
+    </object>
+   </void>
+   <void method="put">
+    <string>U7</string>
+    <object class="br.ufal.ic.p2.bikeshare.models.Users.UserPj">
+     <void property="aluguelAtivo">
+      <string>A6</string>
+     </void>
+     <void property="cnpj">
+      <string>10.101.010/0001-10</string>
+     </void>
+     <void property="email">
+      <string>rodas@exemplo.com</string>
+     </void>
+     <void property="estado">
+      <string>ativo</string>
+     </void>
+     <void property="metodoPagamento">
+      <object class="br.ufal.ic.p2.bikeshare.models.pay.PayPix">
+       <void property="chave">
+        <string>rodas@pix.com</string>
+       </void>
+       <void property="tipo">
+        <string>pix</string>
+       </void>
+      </object>
+     </void>
+     <void property="nome">
+      <string>Rodas Ltda</string>
+     </void>
+     <void property="plano">
+      <string>avulso</string>
+     </void>
+     <void property="razao">
+      <string>Rodas Comercio Ltda</string>
+     </void>
+     <void property="senha">
+      <string>123456</string>
+     </void>
+     <void property="tipo">
+      <string>pessoaJuridica</string>
+     </void>
+    </object>
+   </void>
   </void>
  </object>
 </java>

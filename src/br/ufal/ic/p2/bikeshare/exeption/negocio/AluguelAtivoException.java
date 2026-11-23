@@ -1,7 +1,9 @@
 package br.ufal.ic.p2.bikeshare.exeption.negocio;
 
-public class AluguelAtivoException extends NegocioException {
+import br.ufal.ic.p2.bikeshare.exeption.validacao.ValidacaoException;
+
+public class AluguelAtivoException extends ValidacaoException {
     public AluguelAtivoException() {
-        super("não remover usuário com aluguel em andamento");
+        super("Usuario ja possui um aluguel em andamento.");
     }
 }

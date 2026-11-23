@@ -1,8 +1,6 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoCartaoException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPixException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoSaldoException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
 
 public abstract class Payment {
 
@@ -50,6 +48,10 @@ public abstract class Payment {
 
     public void attSaldo(Double saldo) throws NaoSaldoException {
         throw new NaoSaldoException();
+    }
+
+    public boolean validarParaAluguel() throws SemMetodoPagamentoException, SaldoInsuficienteException {
+        throw new SemMetodoPagamentoException();
     }
 
     //XML

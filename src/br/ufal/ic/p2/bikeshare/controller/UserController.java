@@ -232,11 +232,11 @@ public class UserController {
         consulta.setMetodoPagamento(novo);
     }
 
-    public void removerUsuario(String id) throws UsuarioNaoExisteException, IdNaoNuloException, AluguelAtivoException {
+    public void removerUsuario(String id) throws UsuarioNaoExisteException, IdNaoNuloException, NaoRemoverException {
         User usuario = data.obterUsuario(id);
 
         if(usuario.getAluguelAtivo() != null){
-            throw new AluguelAtivoException();
+            throw new NaoRemoverException();
         } else{
             data.removerUser(id);
         }
@@ -273,7 +273,7 @@ public class UserController {
         return email;
     }
     private double validarPlano(String plano, String smensalidade) throws PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, PlanoSemMensalidadeException {
-        //ValidadorUtils.validaString(plano,PlanoNaoNuloException::new);
+        ValidadorUtils.validaString(plano, PlanoInvalidoException::new);
 
         if(plano.equals("avulso")){
 

@@ -1,12 +1,15 @@
 package br.ufal.ic.p2.bikeshare.controller.Data;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.AluguelNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdAluguelNaoNulaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdBicicletaNulaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdEstacaoNulaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdNaoNuloException;
+import br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel;
 import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
@@ -26,6 +29,8 @@ public class DataSystem {
     private Map<String, Station> estacoes = new LinkedHashMap<>();
     private int proximoIdEstacao = 1;
     private Map<String, Bike> bicicletas = new LinkedHashMap<>();
+    private Map<String, Aluguel> alugueis = new LinkedHashMap<>();
+    private int proximoidAluguel = 1;
 
     private Stack<String> undoStack = new Stack<>();
     private Stack<String> redoStack = new Stack<>();
@@ -40,6 +45,8 @@ public class DataSystem {
         estacoes.clear();
         proximoIdEstacao = 1;
         bicicletas.clear();
+        alugueis.clear();
+        proximoidAluguel = 1;
         salvarDados();
     }
 
@@ -125,13 +132,34 @@ public class DataSystem {
         }
     }
 
+    //aluguel
+
+    public String addAluguel(Aluguel novo){
+        String key = "A" + proximoidAluguel;
+        alugueis.put(key, novo);
+        proximoidAluguel += 1;
+
+        return key;
+    }
+
+    public Aluguel obterAluguel(String id) throws IdAluguelNaoNulaException, AluguelNaoExisteException {
+        if (id == null || id.isBlank()) {
+            throw new IdAluguelNaoNulaException();
+        }
+        Aluguel aluguel = this.alugueis.get(id);
+        if (aluguel == null) {
+            throw new AluguelNaoExisteException();
+        }
+        return aluguel;
+    }
+
     // persistencia xml
 
     public void salvarDados() throws PersistenciaException {
         try (FileOutputStream fos = new FileOutputStream("ShareBankData.xml");
              XMLEncoder encoder = new XMLEncoder(fos)) {
 
-            DataSave dados = new DataSave(this.usuarios, this.proximoid, this.estacoes, this.proximoIdEstacao, this.bicicletas);
+            DataSave dados = new DataSave(this.usuarios, this.proximoid, this.estacoes, this.proximoIdEstacao, this.bicicletas, this.alugueis, this.proximoidAluguel);
             encoder.writeObject(dados);
 
         } catch (Exception e) {
@@ -155,6 +183,8 @@ public class DataSystem {
             this.estacoes = new LinkedHashMap<>(dadosLidos.getEstacoes());
             this.proximoIdEstacao = dadosLidos.getProximoIdEstacao();
             this.bicicletas = new LinkedHashMap<>(dadosLidos.getBicicletas());
+            this.alugueis = new LinkedHashMap<>(dadosLidos.getAlugueis());
+            this.proximoidAluguel = dadosLidos.getProximoIdAluguel();
 
         } catch (Exception e) {
             throw new PersistenciaException();

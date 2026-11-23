@@ -1,5 +1,7 @@
 package br.ufal.ic.p2.bikeshare.models.Bikes;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.BateriaInsuficienteException;
+
 public class BIkeEletric extends Bike{
     private int bateria;
 
@@ -16,6 +18,13 @@ public class BIkeEletric extends Bike{
     @Override
     public boolean estaDisponivel() {
         return super.estaDisponivel() && this.bateria >= 15;
+    }
+
+    @Override
+    public void validarRetirada() throws BateriaInsuficienteException {
+        if(bateria < 15){
+            throw new BateriaInsuficienteException();
+        }
     }
 
     //xml

@@ -1,12 +1,12 @@
 package br.ufal.ic.p2.bikeshare.utils;
 
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.CapacidadeNaoNulaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.ValorNuloException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.CapacidadeNaoNegativaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.CapacidadeNaoNumeroException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.ValidadeInvalidaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.function.Supplier;
 
 public class ValidadorUtils {
@@ -76,6 +76,19 @@ public class ValidadorUtils {
             throw positivoException.get();
         }
         return num;
+    }
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu H:mm").withResolverStyle(ResolverStyle.STRICT);
+
+    public static <T1 extends Exception, T2 extends Exception> String validarData(
+            String data, Supplier<T1> nuloException, Supplier<T2> invalidaException) throws T1, T2 {
+        validaString(data, nuloException);
+        try {
+            LocalDateTime dt = LocalDateTime.parse(data.trim(), FORMATTER);
+            return dt.format(FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw invalidaException.get();
+        }
     }
 }
 

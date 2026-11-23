@@ -1,5 +1,7 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.SemMetodoPagamentoException;
+
 public class PayCard extends Payment{
 
     private String numero;
@@ -31,6 +33,11 @@ public class PayCard extends Payment{
     @Override
     public void attValidade(String validade){
         this.validade = validade;
+    }
+
+    @Override
+    public boolean validarParaAluguel() throws SemMetodoPagamentoException {
+        return true;
     }
 
 

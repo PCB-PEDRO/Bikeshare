@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.bikeshare;
 
+import br.ufal.ic.p2.bikeshare.controller.AluguelController;
 import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
 import br.ufal.ic.p2.bikeshare.controller.EstacaoController;
 import br.ufal.ic.p2.bikeshare.controller.UserController;
@@ -16,11 +17,13 @@ public class Facade {
     private DataSystem data;
     private UserController userController;
     private EstacaoController estacaoController;
+    private AluguelController aluguelController;
 
     public Facade() throws PersistenciaException {
         this.data = new DataSystem();
         this.userController = new UserController(data);
         this.estacaoController = new EstacaoController(data);
+        this.aluguelController = new AluguelController(data);
     }
 
     private static final String AINDA_NAO_IMPLEMENTADO = "Ainda não implementado.";
@@ -77,7 +80,7 @@ public class Facade {
     // US4 - Remocao de usuario
     // =====================================================================
 
-    public void removerUsuario(String usuario) throws UsuarioNaoExisteException, IdNaoNuloException, AluguelAtivoException {
+    public void removerUsuario(String usuario) throws UsuarioNaoExisteException, IdNaoNuloException, NaoRemoverException {
         userController.removerUsuario( usuario);
     }
 
@@ -129,8 +132,8 @@ public class Facade {
     // US8 - Retirada de bicicleta
     // =====================================================================
 
-    public String retirarBicicleta(String usuario, String estacao, String bicicleta, String data) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String retirarBicicleta(String usuario, String estacao, String bicicleta, String data) throws BicicletaNaoExisteException, SaldoInsuficienteException, IdNaoNuloException, AluguelAtivoException, BicicletaNaoEstacaoException, BateriaInsuficienteException, UsuarioNaoExisteException, DataNaoNulaException, IdBicicletaNulaException, SemMetodoPagamentoException, EstacaoNaoExisteException, DataInvalidaException, IdEstacaoNulaException {
+        return aluguelController.retirarBicicleta(usuario, estacao, bicicleta, data);
     }
 
     // =====================================================================
@@ -153,8 +156,8 @@ public class Facade {
         throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
     }
 
-    public String getAtributoAluguel(String aluguel, String atributo) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getAtributoAluguel(String aluguel, String atributo) throws AtributoInvalidoException, AluguelAtivoException, IdAluguelNaoNulaException, AtributoNaoExisteException, AluguelNaoExisteException, AluguelEmAndamentoException {
+        return aluguelController.getAtributoAluguel(aluguel, atributo);
     }
 
     // =====================================================================

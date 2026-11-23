@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.bikeshare.models.Bikes;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.BateriaInsuficienteException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaSemBateriaException;
 
 public abstract class Bike {
@@ -43,6 +44,10 @@ public abstract class Bike {
 
     public boolean estaDisponivel() {
         return this.estado.equals("disponivel");
+    }
+
+    public void validarRetirada() throws BateriaInsuficienteException {
+
     }
 
     //Xml

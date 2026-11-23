@@ -1,5 +1,7 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.SemMetodoPagamentoException;
+
 public class PayPix extends Payment {
 
     private String chave;
@@ -17,6 +19,11 @@ public class PayPix extends Payment {
     @Override
     public void attChave(String chave){
         this.chave = chave;
+    }
+
+    @Override
+    public boolean validarParaAluguel() throws SemMetodoPagamentoException {
+        return true;
     }
 
     //xml
