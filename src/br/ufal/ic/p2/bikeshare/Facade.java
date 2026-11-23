@@ -93,20 +93,20 @@ public class Facade {
     // US6 - Gestao de bicicletas na estacao
     // =====================================================================
 
-    public void adicionarBicicleta(String estacao, String bicicleta, String tipo) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void adicionarBicicleta(String estacao, String bicicleta, String tipo) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoCheiaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
+        estacaoController.adicionarBicicleta(estacao, bicicleta, tipo, null);
     }
 
-    public void adicionarBicicleta(String estacao, String bicicleta, String tipo, String nivelBateria) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void adicionarBicicleta(String estacao, String bicicleta, String tipo, String nivelBateria) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoCheiaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
+        estacaoController.adicionarBicicleta(estacao, bicicleta, tipo, nivelBateria);
     }
 
-    public void removerBicicleta(String estacao, String bicicleta) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void removerBicicleta(String estacao, String bicicleta) throws BicicletaNaoExisteException, BicicletaNaoEstacaoException, IdBicicletaNulaException, EstacaoNaoExisteException, IdEstacaoNulaException {
+        estacaoController.removerBicicleta(estacao, bicicleta);
     }
 
-    public String getAtributoBicicleta(String bicicleta, String atributo) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getAtributoBicicleta(String bicicleta, String atributo) throws AtributoInvalidoException, AtributoNaoAlteraException, BicicletaSemBateriaException, IdBicicletaNulaException, BicicletaNaoExisteException, AtributoNaoExisteException {
+        return estacaoController.getAtributoBicicleta(bicicleta, atributo);
     }
 
     // =====================================================================
@@ -121,8 +121,8 @@ public class Facade {
         return estacaoController.obterVagasDisponiveis(estacao);
     }
 
-    public String getEstadoBicicleta(String bicicleta) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public String getEstadoBicicleta(String bicicleta) throws BicicletaNaoExisteException, IdBicicletaNulaException {
+        return estacaoController.getEstadoBicicleta(bicicleta);
     }
 
     // =====================================================================

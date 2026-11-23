@@ -1,5 +1,9 @@
 package br.ufal.ic.p2.bikeshare.models.stations;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaNaoEstacaoException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoCheiaException;
+import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +11,7 @@ public class Station {
     private String nome;
     private String endereco;
     private int capacidade;
-    List<String> bicicletas = new ArrayList<>();
+    List<Bike> bicicletas = new ArrayList<>();
 
     public Station(String nome, String endereco, int capacidade) {
         this.nome = nome;
@@ -40,22 +44,43 @@ public class Station {
         this.capacidade = capacidade;
     }
 
-    public List<String> getBicicletas() {
-        return bicicletas;
+    public void addBike(Bike nova) throws EstacaoCheiaException {
+        if(calcularVagasDisponiveis() > 0) {
+            bicicletas.add(nova);
+        }else {
+            throw new EstacaoCheiaException();
+        }
     }
 
-    public void setBicicletas(List<String> bicicletas) {
-        this.bicicletas = bicicletas;
+    public void removerBike(Bike bike) throws BicicletaNaoEstacaoException {
+        boolean removida = bicicletas.remove(bike);
+        if (!removida) {
+            throw new BicicletaNaoEstacaoException();
+        }
     }
 
     public int calcularVagasDisponiveis() {
         return capacidade - bicicletas.size();
     }
-    public int calcularBicicletasDisponiveis() {
-        return bicicletas.size();
-    }
 
+    public int calcularBicicletasDisponiveis() {
+        int disponiveis = 0;
+        for (Bike bike : bicicletas) {
+            if (bike.estaDisponivel()) {
+                disponiveis++;
+            }
+        }
+        return disponiveis;
+    }
     //Xml
 
     public Station(){ }
+
+    public List<Bike> getBicicletas() {
+        return bicicletas;
+    }
+
+    public void setBicicletas(List<Bike> bicicletas) {
+        this.bicicletas = bicicletas;
+    }
 }

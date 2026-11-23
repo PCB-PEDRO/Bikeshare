@@ -1,10 +1,13 @@
 package br.ufal.ic.p2.bikeshare.controller.Data;
 
+import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
 import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
+import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdBicicletaNulaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdEstacaoNulaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdNaoNuloException;
+import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
 
@@ -22,6 +25,8 @@ public class DataSystem {
     private int proximoid = 1;
     private Map<String, Station> estacoes = new LinkedHashMap<>();
     private int proximoIdEstacao = 1;
+    private Map<String, Bike> bicicletas = new LinkedHashMap<>();
+
     private Stack<String> undoStack = new Stack<>();
     private Stack<String> redoStack = new Stack<>();
 
@@ -34,6 +39,7 @@ public class DataSystem {
         proximoid = 1;
         estacoes.clear();
         proximoIdEstacao = 1;
+        bicicletas.clear();
         salvarDados();
     }
 
@@ -100,13 +106,32 @@ public class DataSystem {
         return estacao;
     }
 
+    public void addBike(Bike nova, String key){
+        bicicletas.put(key, nova);
+    }
+
+    public Bike obterBike(String id) throws IdBicicletaNulaException {
+        if (id == null || id.isBlank()) {
+            throw new IdBicicletaNulaException();
+        }
+        return this.bicicletas.get(id);
+    }
+
+    public void removerBike(String remove) throws BicicletaNaoExisteException {
+        Bike aux = bicicletas.remove(remove);
+
+        if (remove == null) {
+            throw new BicicletaNaoExisteException();
+        }
+    }
+
     // persistencia xml
 
     public void salvarDados() throws PersistenciaException {
         try (FileOutputStream fos = new FileOutputStream("ShareBankData.xml");
              XMLEncoder encoder = new XMLEncoder(fos)) {
 
-            DataSave dados = new DataSave(this.usuarios, this.proximoid, this.estacoes, this.proximoIdEstacao);
+            DataSave dados = new DataSave(this.usuarios, this.proximoid, this.estacoes, this.proximoIdEstacao, this.bicicletas);
             encoder.writeObject(dados);
 
         } catch (Exception e) {
@@ -129,6 +154,7 @@ public class DataSystem {
             this.proximoid = dadosLidos.getProximoid();
             this.estacoes = new LinkedHashMap<>(dadosLidos.getEstacoes());
             this.proximoIdEstacao = dadosLidos.getProximoIdEstacao();
+            this.bicicletas = new LinkedHashMap<>(dadosLidos.getBicicletas());
 
         } catch (Exception e) {
             throw new PersistenciaException();

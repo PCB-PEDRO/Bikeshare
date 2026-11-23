@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.bikeshare.controller.Data;
 
+import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
 
@@ -13,13 +14,14 @@ public class DataSave {
     private int proximoid;
     private Map<String, Station> estacoes;
     private int proximoIdEstacao = 1;
+    private Map<String, Bike> bicicletas;
 
-    public DataSave(Map<String, User> usuarios, int proximoid, Map<String, Station> estacoes, int proximoIdEstacao) {
+    public DataSave(Map<String, User> usuarios, int proximoid, Map<String, Station> estacoes, int proximoIdEstacao, Map<String, Bike> bicicletas) {
         this.usuarios = new LinkedHashMap<>(usuarios);
         this.proximoid = proximoid;
-        this.estacoes = estacoes;
+        this.estacoes = new LinkedHashMap<>(estacoes);
         this.proximoIdEstacao = proximoIdEstacao;
-
+        this.bicicletas = new LinkedHashMap<>(bicicletas);
     }
 
     public DataSave() {
@@ -55,5 +57,13 @@ public class DataSave {
 
     public void setProximoIdEstacao(int proximoIdEstacao) {
         this.proximoIdEstacao = proximoIdEstacao;
+    }
+
+    public Map<String, Bike> getBicicletas() {
+        return bicicletas;
+    }
+
+    public void setBicicletas(Map<String, Bike> bicicletas) {
+        this.bicicletas = bicicletas;
     }
 }

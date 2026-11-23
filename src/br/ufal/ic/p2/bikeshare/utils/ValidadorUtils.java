@@ -59,18 +59,23 @@ public class ValidadorUtils {
         }
     }
 
-    public static int conversaoIntPositivo(String valor) throws CapacidadeNaoNulaException, CapacidadeNaoNumeroException, CapacidadeNaoNegativaException {
-        validaString(valor, CapacidadeNaoNulaException::new);
-        int num;
+    public static <T1 extends Exception, T2 extends Exception> int conversaoInt(
+            String valor, Supplier<T1> numeroException, Supplier<T2> nuloException) throws T1, T2 {
+        validaString(valor, nuloException);
         try {
-            num = Integer.parseInt(valor.trim());
+            return Integer.parseInt(valor.trim());
         } catch (NumberFormatException e) {
-            throw new CapacidadeNaoNumeroException();
+            throw numeroException.get();
         }
+    }
+
+    public static <T1 extends Exception, T2 extends Exception, T3 extends Exception> int conversaoIntPositivo(
+            String valor, Supplier<T1> numeroException, Supplier<T2> positivoException, Supplier<T3> nuloException) throws T1, T2, T3 {
+        int num = conversaoInt(valor, numeroException, nuloException);
         if (num <= 0) {
-            throw new CapacidadeNaoNegativaException();
+            throw positivoException.get();
         }
         return num;
     }
-
 }
+
