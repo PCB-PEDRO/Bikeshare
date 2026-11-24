@@ -1,10 +1,8 @@
 package br.ufal.ic.p2.bikeshare.models.Alugueis;
 
-import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
-import br.ufal.ic.p2.bikeshare.models.Users.User;
-import br.ufal.ic.p2.bikeshare.models.stations.Station;
-
 public class Aluguel {
+    private static final String ESTADO_EM_ANDAMENTO = "emAndamento";
+
     private String usuario;
     private String bicicleta;
     private String estacaoOrigem;
@@ -12,16 +10,16 @@ public class Aluguel {
     private String inicio;
     private String fim;
     private String estado;
-    private double valorCobrado;;
+    private double valorCobrado;
 
-    public Aluguel(String usuario, String bicicleta, String estacaoOrigem, String inicio){
+    public Aluguel(String usuario, String bicicleta, String estacaoOrigem, String inicio) {
         this.usuario = usuario;
         this.bicicleta = bicicleta;
         this.estacaoOrigem = estacaoOrigem;
         this.inicio = inicio;
         this.estacaoDestino = null;
         this.fim = null;
-        this.estado = "emAndamento";
+        this.estado = ESTADO_EM_ANDAMENTO;
         this.valorCobrado = 0.0;
     }
 
@@ -91,5 +89,6 @@ public class Aluguel {
 
     //Xml
 
-    public Aluguel(){}
+    public Aluguel() {
+    }
 }

@@ -1,34 +1,39 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.SemMetodoPagamentoException;
+import br.ufal.ic.p2.bikeshare.models.Users.User;
 
 public class PayPix extends Payment {
 
     private String chave;
 
-    public PayPix(String tipo, String chave) {
-        super(tipo);
+    public PayPix(String chave) {
+        super();
         this.chave = chave;
     }
 
     @Override
-    public String obterChave(){
+    public String getTipo() {
+        return "pix";
+    }
+
+    @Override
+    public String obterChave() {
         return chave;
     }
 
     @Override
-    public void attChave(String chave){
-        this.chave = chave;
+    public void validarParaAluguel(User usuario) {
     }
 
     @Override
-    public boolean validarParaAluguel() throws SemMetodoPagamentoException {
-        return true;
+    public void cobrar(User usuario, double valor) {
     }
 
     //xml
 
-    public PayPix(){super();}
+    public PayPix() {
+        super();
+    }
 
     public String getChave() {
         return chave;

@@ -1,0 +1,7 @@
+package br.ufal.ic.p2.bikeshare.exception.negocio;
+
+public class EstacaoCheiaException extends NegocioException {
+    public EstacaoCheiaException() {
+        super("Estacao cheia.");
+    }
+}

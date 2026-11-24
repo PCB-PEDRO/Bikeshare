@@ -1,26 +1,21 @@
 package br.ufal.ic.p2.bikeshare.models.Bikes;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.BateriaInsuficienteException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaSemBateriaException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.BateriaInsuficienteException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.BicicletaIndisponivelException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.BicicletaSemBateriaException;
 
 public abstract class Bike {
-    private String tipo;
+    private static final String ESTADO_DISPONIVEL = "disponivel";
+
     private String estado;
     private String estacao;
 
-    public Bike(String tipo, String estacao) {
-        this.tipo = tipo;
-        this.estado = "disponivel";
+    public Bike(String estacao) {
+        this.estado = ESTADO_DISPONIVEL;
         this.estacao = estacao;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    public abstract String getTipo();
 
     public String getEstado() {
         return estado;
@@ -38,23 +33,26 @@ public abstract class Bike {
         this.estacao = estacao;
     }
 
-    public int obterNivelBateria() throws BicicletaSemBateriaException{
+    public int obterNivelBateria() throws BicicletaSemBateriaException {
         throw new BicicletaSemBateriaException();
     }
 
     public boolean estaDisponivel() {
-        return this.estado.equals("disponivel");
+        return ESTADO_DISPONIVEL.equals(this.estado);
     }
 
-    public void validarRetirada() throws BateriaInsuficienteException {
-
+    public void validarRetirada() throws BicicletaIndisponivelException, BateriaInsuficienteException {
+        if (!ESTADO_DISPONIVEL.equals(this.estado)) {
+            throw new BicicletaIndisponivelException();
+        }
     }
 
-    public double calcularAdicional(long minutos){
+    public double calcularAdicional(long minutos) {
         return 0.0;
     }
 
     //Xml
 
-    public Bike(){}
+    public Bike() {
+    }
 }

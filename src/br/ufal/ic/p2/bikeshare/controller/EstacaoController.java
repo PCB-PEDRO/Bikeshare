@@ -1,68 +1,64 @@
 package br.ufal.ic.p2.bikeshare.controller;
 
 import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.Bateria0a100Exception;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.BateriaNaoNumeroException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.CapacidadeNaoNegativaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.CapacidadeNaoNumeroException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.AtributoNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.TipoInvalidoException;
-import br.ufal.ic.p2.bikeshare.models.Bikes.BIkeEletric;
+import br.ufal.ic.p2.bikeshare.exception.BikeshareException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.numericos.Bateria0a100Exception;
+import br.ufal.ic.p2.bikeshare.exception.validacao.numericos.BateriaNaoNumeroException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.numericos.CapacidadeNaoNegativaException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.numericos.CapacidadeNaoNumeroException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.tipos.AtributoNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.tipos.TipoInvalidoException;
 import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
+import br.ufal.ic.p2.bikeshare.models.Bikes.BikeEletrica;
 import br.ufal.ic.p2.bikeshare.models.Bikes.BikeNorm;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
 import br.ufal.ic.p2.bikeshare.utils.ValidadorUtils;
 
 public class EstacaoController {
+    private static final int BATERIA_MINIMA_VALIDA = 0;
+    private static final int BATERIA_MAXIMA_VALIDA = 100;
+
     private DataSystem data;
 
-    public EstacaoController (DataSystem data){
+    public EstacaoController(DataSystem data) {
         this.data = data;
     }
 
-    public String criarEstacao(String nome, String endereco, String scapacidade) throws NomeNaoNuloException, CapacidadeNaoNumeroException, CapacidadeNaoNegativaException, CapacidadeNaoNulaException, EnderecoNaoNuloException {
-        int capacidade = validarDadosEstacao( nome, endereco, scapacidade);
+    public String criarEstacao(String nome, String endereco, String scapacidade) throws BikeshareException {
+        int capacidade = validarDadosEstacao(nome, endereco, scapacidade);
         Station nova = new Station(nome, endereco, capacidade);
-        String id = data.addStation(nova);
-
-        return id;
+        return data.addStation(nova);
     }
 
-    public String obterVagasDisponiveis(String idE) throws EstacaoNaoExisteException, IdEstacaoNulaException {
+    public String obterVagasDisponiveis(String idE) throws BikeshareException {
         Station consulta = data.obterEstacao(idE);
-
-        int vagas = consulta.calcularVagasDisponiveis();
-
-        return String.valueOf(vagas);
+        return String.valueOf(consulta.calcularVagasDisponiveis());
     }
 
-    public String getBicicletasDisponiveis(String idE) throws EstacaoNaoExisteException, IdEstacaoNulaException {
+    public String getBicicletasDisponiveis(String idE) throws BikeshareException {
         Station consulta = data.obterEstacao(idE);
-
-        int bikes = consulta.calcularBicicletasDisponiveis();
-
-        return String.valueOf(bikes);
+        return String.valueOf(consulta.calcularBicicletasDisponiveis());
     }
 
-    public void adicionarBicicleta(String sestacao, String bicicleta, String tipo, String sbateria) throws EstacaoNaoExisteException, IdEstacaoNulaException, IdBicicletaNulaException, BicicletaJaExisteException, BicicletaSemBateriaException, BateriaNulaException, Bateria0a100Exception, BateriaNaoNumeroException, TipoInvalidoException, EstacaoSemVagaException {
+    public void adicionarBicicleta(String sestacao, String bicicleta, String tipo, String sbateria) throws BikeshareException {
         Station estacao = data.obterEstacao(sestacao);
 
         ValidadorUtils.validaString(bicicleta, IdBicicletaNulaException::new);
-        if (data.obterBike(bicicleta) != null) {
+        if (data.contemBicicleta(bicicleta)) {
             throw new BicicletaJaExisteException();
         }
 
         Bike nova;
-        if (tipo.equals("convencional")) {
+        if ("convencional".equals(tipo)) {
             if (sbateria != null) {
                 throw new BicicletaSemBateriaException();
             }
-            nova = new BikeNorm(tipo, sestacao);
-        } else if (tipo.equals("eletrica")) {
+            nova = new BikeNorm(sestacao);
+        } else if ("eletrica".equals(tipo)) {
             int bateria = validarBateria(sbateria);
-            nova = new BIkeEletric(tipo, sestacao, bateria);
+            nova = new BikeEletrica(sestacao, bateria);
         } else {
             throw new TipoInvalidoException();
         }
@@ -71,45 +67,29 @@ public class EstacaoController {
         data.addBike(nova, bicicleta);
     }
 
-    public void removerBicicleta(String sestacao, String sbicicleta) throws EstacaoNaoExisteException, IdEstacaoNulaException, IdBicicletaNulaException, BicicletaNaoExisteException, BicicletaNaoEstacaoException {
+    public void removerBicicleta(String sestacao, String sbicicleta) throws BikeshareException {
         Station estacao = data.obterEstacao(sestacao);
-        ValidadorUtils.validaString(sbicicleta, IdBicicletaNulaException::new);
-
         Bike bicicleta = data.obterBike(sbicicleta);
 
-        if(bicicleta == null){
-            throw new BicicletaNaoExisteException();
-        }else {
-            estacao.removerBike(bicicleta);
-            data.removerBike(sbicicleta);
-        }
+        estacao.removerBike(bicicleta);
+        data.removerBike(sbicicleta);
     }
 
-    public String getEstadoBicicleta(String bicicleta) throws IdBicicletaNulaException, BicicletaNaoExisteException {
-        ValidadorUtils.validaString(bicicleta, IdBicicletaNulaException::new);
+    public String getEstadoBicicleta(String bicicleta) throws BikeshareException {
         Bike consulta = data.obterBike(bicicleta);
-        if(consulta == null){
-            throw new BicicletaNaoExisteException();
-        }else {
-            return consulta.getEstado();
-        }
+        return consulta.getEstado();
     }
 
-    public String getAtributoBicicleta(String bicicleta, String atributo) throws IdBicicletaNulaException, AtributoInvalidoException, BicicletaSemBateriaException, AtributoNaoAlteraException, BicicletaNaoExisteException, AtributoNaoExisteException {
-        ValidadorUtils.validaString(bicicleta, IdBicicletaNulaException::new);
+    public String getAtributoBicicleta(String bicicleta, String atributo) throws BikeshareException {
+        Bike consulta = data.obterBike(bicicleta);
         ValidadorUtils.validaString(atributo, AtributoNaoExisteException::new);
 
-        Bike consulta = data.obterBike(bicicleta);
-        if(consulta == null){
-            throw new BicicletaNaoExisteException();
-        }
-
-        switch(atributo){
+        switch (atributo) {
             case "tipo":
                 return consulta.getTipo();
             case "estado":
                 return consulta.getEstado();
-            case"estacao":
+            case "estacao":
                 return consulta.getEstacao();
             case "nivelBateria":
                 return String.valueOf(consulta.obterNivelBateria());
@@ -118,22 +98,17 @@ public class EstacaoController {
         }
     }
 
-
-    private int validarDadosEstacao(String nome, String endereco, String capacidade) throws EnderecoNaoNuloException, NomeNaoNuloException, CapacidadeNaoNumeroException, CapacidadeNaoNegativaException, CapacidadeNaoNulaException {
+    private int validarDadosEstacao(String nome, String endereco, String capacidade) throws BikeshareException {
         ValidadorUtils.validaString(nome, NomeNaoNuloException::new);
         ValidadorUtils.validaString(endereco, EnderecoNaoNuloException::new);
-        int num = ValidadorUtils.conversaoIntPositivo(capacidade, CapacidadeNaoNumeroException::new, CapacidadeNaoNegativaException::new, CapacidadeNaoNulaException::new);
-
-        return num;
+        return ValidadorUtils.conversaoIntPositivo(capacidade, CapacidadeNaoNumeroException::new, CapacidadeNaoNegativaException::new, CapacidadeNaoNulaException::new);
     }
 
-    private int validarBateria(String bateria) throws BateriaNulaException, Bateria0a100Exception, BateriaNaoNumeroException {
-        int num = ValidadorUtils.conversaoInt(bateria, BateriaNaoNumeroException::new,BateriaNulaException::new);
-        if (num < 0 || num > 100) {
+    private int validarBateria(String bateria) throws BikeshareException {
+        int num = ValidadorUtils.conversaoInt(bateria, BateriaNaoNumeroException::new, BateriaNulaException::new);
+        if (num < BATERIA_MINIMA_VALIDA || num > BATERIA_MAXIMA_VALIDA) {
             throw new Bateria0a100Exception();
         }
-
         return num;
-
     }
 }

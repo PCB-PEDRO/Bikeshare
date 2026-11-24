@@ -1,38 +1,41 @@
 package br.ufal.ic.p2.bikeshare.models.Users;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPfException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoPjException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.NaoSaldoException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.NaoPfException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.NaoPjException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.NaoSaldoException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.PlanoSemMensalidadeException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.SaldoInsuficienteException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.SemMetodoPagamentoException;
 import br.ufal.ic.p2.bikeshare.models.pay.NoPay;
 import br.ufal.ic.p2.bikeshare.models.pay.Payment;
+import br.ufal.ic.p2.bikeshare.models.planos.Plano;
 
-public abstract class User{
+public abstract class User {
+    private static final String ESTADO_ATIVO = "ativo";
 
     private String nome;
     private String email;
     private String senha;
-    private String tipo;
-    private String plano;
-    private double mensalidade;
+    private Plano plano;
     private String estado;
     private Payment metodoPagamento;
     private String aluguelAtivo;
     private double totalPendencias;
     private double saldo;
 
-    public User(String nome, String email, String senha, String tipo, String plano, double mensalidade) {
+    public User(String nome, String email, String senha, Plano plano) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.tipo = tipo;
         this.plano = plano;
-        this.mensalidade = mensalidade;
-        this.estado ="ativo";
-        this.metodoPagamento = new NoPay("nenhum");
+        this.estado = ESTADO_ATIVO;
+        this.metodoPagamento = new NoPay();
         this.aluguelAtivo = null;
         this.totalPendencias = 0.0;
         this.saldo = 0.0;
     }
+
+    public abstract String getTipo();
 
     public String getNome() {
         return nome;
@@ -58,28 +61,24 @@ public abstract class User{
         this.senha = senha;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getPlano() {
+    public Plano getPlano() {
         return plano;
     }
 
-    public void setPlano(String plano) {
+    public void setPlano(Plano plano) {
         this.plano = plano;
     }
 
-    public double getMensalidade() {
-        return mensalidade;
+    public String obterNomePlano() {
+        return plano.getNome();
     }
 
-    public void setMensalidade(double mensalidade) {
-        this.mensalidade = mensalidade;
+    public double obterMensalidade() throws PlanoSemMensalidadeException {
+        return plano.obterMensalidade();
+    }
+
+    public double calcularTarifaPlano(long minutos) {
+        return plano.calcularTarifa(minutos);
     }
 
     public String getEstado() {
@@ -139,23 +138,22 @@ public abstract class User{
     }
 
     public double obterSaldo() throws NaoSaldoException {
-        if(getMetodoPagamento().getTipo().equals("saldoPreCarregado")){
-            return saldo;
-        }
-        else {
-            throw new NaoSaldoException();
-        }
+        return metodoPagamento.obterSaldo(this);
     }
 
-    public void attSaldo(double saldo) throws NaoSaldoException {
+    public void recarregarSaldo(double valorAdicional) throws NaoSaldoException {
+        metodoPagamento.adicionarSaldo(this, valorAdicional);
+    }
 
-        metodoPagamento.attSaldo(saldo);
-        this.saldo = saldo;
+    public void validarPagamentoParaAluguel() throws SemMetodoPagamentoException, SaldoInsuficienteException {
+        metodoPagamento.validarParaAluguel(this);
+    }
 
+    public void cobrarAluguel(double valor) throws SemMetodoPagamentoException, SaldoInsuficienteException {
+        metodoPagamento.cobrar(this, valor);
     }
 
     //xml
-
 
     public double getSaldo() {
         return saldo;
@@ -165,6 +163,6 @@ public abstract class User{
         this.saldo = saldo;
     }
 
-    public User(){ }
-
+    public User() {
+    }
 }

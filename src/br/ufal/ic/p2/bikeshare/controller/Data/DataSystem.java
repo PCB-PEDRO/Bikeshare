@@ -1,61 +1,58 @@
 package br.ufal.ic.p2.bikeshare.controller.Data;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.AluguelNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.UsuarioNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdAluguelNaoNulaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdBicicletaNulaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdEstacaoNulaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.IdNaoNuloException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.AluguelNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.BicicletaNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.EstacaoNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.UsuarioNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exception.sistema.PersistenciaException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.IdAluguelNaoNulaException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.IdBicicletaNulaException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.IdEstacaoNulaException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.IdNaoNuloException;
 import br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel;
 import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Stack;
 
 public class DataSystem {
     private Map<String, User> usuarios = new LinkedHashMap<>();
-    private int proximoid = 1;
+    private int proximoIdUsuario = 1;
     private Map<String, Station> estacoes = new LinkedHashMap<>();
     private int proximoIdEstacao = 1;
     private Map<String, Bike> bicicletas = new LinkedHashMap<>();
     private Map<String, Aluguel> alugueis = new LinkedHashMap<>();
-    private int proximoidAluguel = 1;
+    private int proximoIdAluguel = 1;
+
+    private final PersistenciaXML persistencia = new PersistenciaXML();
 
     private Stack<String> undoStack = new Stack<>();
     private Stack<String> redoStack = new Stack<>();
 
-    public DataSystem () throws PersistenciaException {
+    public DataSystem() throws PersistenciaException {
         carregarDados();
     }
 
     public void zerarSistema() throws PersistenciaException {
         usuarios.clear();
-        proximoid = 1;
+        proximoIdUsuario = 1;
         estacoes.clear();
         proximoIdEstacao = 1;
         bicicletas.clear();
         alugueis.clear();
-        proximoidAluguel = 1;
+        proximoIdAluguel = 1;
         salvarDados();
     }
 
     // User
 
-    public String addUser(User novo){
-        String key = "U" + proximoid;
+    public String addUser(User novo) {
+        String key = "U" + proximoIdUsuario;
         usuarios.put(key, novo);
-        proximoid += 1;
+        proximoIdUsuario += 1;
 
         return key;
     }
@@ -71,14 +68,12 @@ public class DataSystem {
         return usuario;
     }
 
-    public String getUserEmail(String email){
-
+    public String getUserEmail(String email) {
         for (String id : usuarios.keySet()) {
             User usuario = usuarios.get(id);
 
-            if (usuario.getEmail().equals(email)) {
-                    return id;
-
+            if (email != null && email.equals(usuario.getEmail())) {
+                return id;
             }
         }
         return null;
@@ -94,7 +89,7 @@ public class DataSystem {
 
     //station
 
-    public String addStation(Station novo){
+    public String addStation(Station novo) {
         String key = "E" + proximoIdEstacao;
         estacoes.put(key, novo);
         proximoIdEstacao += 1;
@@ -113,31 +108,39 @@ public class DataSystem {
         return estacao;
     }
 
-    public void addBike(Bike nova, String key){
+    public void addBike(Bike nova, String key) {
         bicicletas.put(key, nova);
     }
 
-    public Bike obterBike(String id) throws IdBicicletaNulaException {
+    public boolean contemBicicleta(String id) {
+        return id != null && this.bicicletas.containsKey(id);
+    }
+
+    public Bike obterBike(String id) throws IdBicicletaNulaException, BicicletaNaoExisteException {
         if (id == null || id.isBlank()) {
             throw new IdBicicletaNulaException();
         }
-        return this.bicicletas.get(id);
+        Bike bike = this.bicicletas.get(id);
+        if (bike == null) {
+            throw new BicicletaNaoExisteException();
+        }
+        return bike;
     }
 
     public void removerBike(String remove) throws BicicletaNaoExisteException {
         Bike aux = bicicletas.remove(remove);
 
-        if (remove == null) {
+        if (aux == null) {
             throw new BicicletaNaoExisteException();
         }
     }
 
     //aluguel
 
-    public String addAluguel(Aluguel novo){
-        String key = "A" + proximoidAluguel;
+    public String addAluguel(Aluguel novo) {
+        String key = "A" + proximoIdAluguel;
         alugueis.put(key, novo);
-        proximoidAluguel += 1;
+        proximoIdAluguel += 1;
 
         return key;
     }
@@ -156,38 +159,22 @@ public class DataSystem {
     // persistencia xml
 
     public void salvarDados() throws PersistenciaException {
-        try (FileOutputStream fos = new FileOutputStream("ShareBankData.xml");
-             XMLEncoder encoder = new XMLEncoder(fos)) {
-
-            DataSave dados = new DataSave(this.usuarios, this.proximoid, this.estacoes, this.proximoIdEstacao, this.bicicletas, this.alugueis, this.proximoidAluguel);
-            encoder.writeObject(dados);
-
-        } catch (Exception e) {
-            throw new PersistenciaException();
-        }
+        DataSave dados = new DataSave(this.usuarios, this.proximoIdUsuario, this.estacoes, this.proximoIdEstacao, this.bicicletas, this.alugueis, this.proximoIdAluguel);
+        persistencia.salvarDados(dados);
     }
 
     public void carregarDados() throws PersistenciaException {
-        File arquivo = new File("ShareBankData.xml");
-
-        if (!arquivo.exists()) {
+        DataSave dadosLidos = persistencia.carregarDados();
+        if (dadosLidos == null) {
             return;
         }
 
-        try (FileInputStream fis = new FileInputStream(arquivo); XMLDecoder decoder = new XMLDecoder(fis)) {
-
-            DataSave dadosLidos = (DataSave) decoder.readObject();
-
-            this.usuarios = new LinkedHashMap<>(dadosLidos.getUsuarios());
-            this.proximoid = dadosLidos.getProximoid();
-            this.estacoes = new LinkedHashMap<>(dadosLidos.getEstacoes());
-            this.proximoIdEstacao = dadosLidos.getProximoIdEstacao();
-            this.bicicletas = new LinkedHashMap<>(dadosLidos.getBicicletas());
-            this.alugueis = new LinkedHashMap<>(dadosLidos.getAlugueis());
-            this.proximoidAluguel = dadosLidos.getProximoIdAluguel();
-
-        } catch (Exception e) {
-            throw new PersistenciaException();
-        }
+        this.usuarios = new LinkedHashMap<>(dadosLidos.getUsuarios());
+        this.proximoIdUsuario = dadosLidos.getProximoIdUsuario();
+        this.estacoes = new LinkedHashMap<>(dadosLidos.getEstacoes());
+        this.proximoIdEstacao = dadosLidos.getProximoIdEstacao();
+        this.bicicletas = new LinkedHashMap<>(dadosLidos.getBicicletas());
+        this.alugueis = new LinkedHashMap<>(dadosLidos.getAlugueis());
+        this.proximoIdAluguel = dadosLidos.getProximoIdAluguel();
     }
 }

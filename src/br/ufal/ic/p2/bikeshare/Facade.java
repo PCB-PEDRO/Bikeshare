@@ -4,11 +4,7 @@ import br.ufal.ic.p2.bikeshare.controller.AluguelController;
 import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
 import br.ufal.ic.p2.bikeshare.controller.EstacaoController;
 import br.ufal.ic.p2.bikeshare.controller.UserController;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
-import br.ufal.ic.p2.bikeshare.exeption.sistema.PersistenciaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.*;
+import br.ufal.ic.p2.bikeshare.exception.BikeshareException;
 
 /**
  Facade
@@ -19,7 +15,7 @@ public class Facade {
     private EstacaoController estacaoController;
     private AluguelController aluguelController;
 
-    public Facade() throws PersistenciaException {
+    public Facade() throws BikeshareException {
         this.data = new DataSystem();
         this.userController = new UserController(data);
         this.estacaoController = new EstacaoController(data);
@@ -32,19 +28,19 @@ public class Facade {
     // US1 - Cadastro de usuario
     // =====================================================================
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpfOuCnpj) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpfOuCnpj) throws BikeshareException {
         return userController.criarUsuario(nome, email, senha, tipo, cpfOuCnpj);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws BikeshareException {
         return userController.criarUsuario(nome, email, senha, tipo, cnpj, razaoSocial);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String mensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String mensalidade) throws BikeshareException {
         return userController.criarUsuario(nome, email, senha, tipo, cpf, plano, mensalidade);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String mensalidade) throws NomeNaoNuloException, RazaoNaoNuloException, CnpjNaoNuloException, PlanoNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, MensalidadeNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoInvalidoException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String mensalidade) throws BikeshareException {
         return userController.criarUsuario(nome, email, senha, tipo, cnpj, razaoSocial, plano, mensalidade);
     }
 
@@ -52,11 +48,11 @@ public class Facade {
     // US2 - Consulta de usuario
     // =====================================================================
 
-    public String getAtributoUsuario(String usuario, String atributo) throws UsuarioNaoExisteException, IdNaoNuloException, NaoPfException, AtributoNaoExisteException, NaoPjException, PlanoSemMensalidadeException, NaoCartaoException, NaoSaldoException, NaoPixException {
-        return userController.getAtributoUsuario(usuario,atributo,null,null, null);
+    public String getAtributoUsuario(String usuario, String atributo) throws BikeshareException {
+        return userController.getAtributoUsuario(usuario, atributo);
     }
 
-    public String getUsuarioPorEmail(String email) throws UsuarioNaoExisteException, EmailCadastradoException, EmailNaoNuloException, EmailIvalidoException {
+    public String getUsuarioPorEmail(String email) throws BikeshareException {
         return userController.getUserEmail(email);
     }
 
@@ -64,15 +60,15 @@ public class Facade {
     // US3 - Alteracao de usuario (inclui metodo de pagamento)
     // =====================================================================
 
-    public void alterarUsuario(String usuario, String atributo, String valor) throws UsuarioNaoExisteException, ValorNuloException, AtributoInvalidoException, IdNaoNuloException, NaoPfException, AtributoNaoExisteException, ValorNaoNegativaException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, ValorNaoNumeroException, MensalidadeNaoNumeroException, NaoPjException, NomeNaoNuloException, EmailCadastradoException, EmailNaoNuloException, EmailIvalidoException, SenhaNaoNuloException, PlanoInvalidoException, AtributoNaoAlteraException, NaoSaldoException, MetodoPagamentoInvalidoException {
+    public void alterarUsuario(String usuario, String atributo, String valor) throws BikeshareException {
         userController.alterarAtributos(usuario, atributo, valor);
     }
 
-    public void alterarUsuario(String usuario, String atributo, String valor1, String chave) throws ValorNuloException, UsuarioNaoExisteException, AtributoInvalidoException, IdNaoNuloException, AtributoNaoExisteException, ChaveNaoNuloException, AtributoNaoAlteraException, MetodoPagamentoInvalidoException {
+    public void alterarUsuario(String usuario, String atributo, String valor1, String chave) throws BikeshareException {
         userController.alterarMetodoPix(usuario, atributo, valor1, chave);
     }
 
-    public void alterarUsuario(String usuario, String atributo, String valor1, String numero, String validade) throws ValorNuloException, ValidadeNaoNulaException, UsuarioNaoExisteException, AtributoInvalidoException, IdNaoNuloException, AtributoNaoExisteException, CartaoNaoNuloException, AtributoNaoAlteraException, ValidadeInvalidaException, MetodoPagamentoInvalidoException {
+    public void alterarUsuario(String usuario, String atributo, String valor1, String numero, String validade) throws BikeshareException {
         userController.alterarMetodoCard(usuario, atributo, valor1, numero, validade);
     }
 
@@ -80,15 +76,15 @@ public class Facade {
     // US4 - Remocao de usuario
     // =====================================================================
 
-    public void removerUsuario(String usuario) throws UsuarioNaoExisteException, IdNaoNuloException, NaoRemoverException {
-        userController.removerUsuario( usuario);
+    public void removerUsuario(String usuario) throws BikeshareException {
+        userController.removerUsuario(usuario);
     }
 
     // =====================================================================
     // US5 - Cadastro de estacao
     // =====================================================================
 
-    public String criarEstacao(String nome, String endereco, String capacidade) throws NomeNaoNuloException, CapacidadeNaoNumeroException, CapacidadeNaoNegativaException, CapacidadeNaoNulaException, EnderecoNaoNuloException {
+    public String criarEstacao(String nome, String endereco, String capacidade) throws BikeshareException {
         return estacaoController.criarEstacao(nome, endereco, capacidade);
     }
 
@@ -96,19 +92,19 @@ public class Facade {
     // US6 - Gestao de bicicletas na estacao
     // =====================================================================
 
-    public void adicionarBicicleta(String estacao, String bicicleta, String tipo) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoSemVagaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
+    public void adicionarBicicleta(String estacao, String bicicleta, String tipo) throws BikeshareException {
         estacaoController.adicionarBicicleta(estacao, bicicleta, tipo, null);
     }
 
-    public void adicionarBicicleta(String estacao, String bicicleta, String tipo, String nivelBateria) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoSemVagaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
+    public void adicionarBicicleta(String estacao, String bicicleta, String tipo, String nivelBateria) throws BikeshareException {
         estacaoController.adicionarBicicleta(estacao, bicicleta, tipo, nivelBateria);
     }
 
-    public void removerBicicleta(String estacao, String bicicleta) throws BicicletaNaoExisteException, BicicletaNaoEstacaoException, IdBicicletaNulaException, EstacaoNaoExisteException, IdEstacaoNulaException {
+    public void removerBicicleta(String estacao, String bicicleta) throws BikeshareException {
         estacaoController.removerBicicleta(estacao, bicicleta);
     }
 
-    public String getAtributoBicicleta(String bicicleta, String atributo) throws AtributoInvalidoException, AtributoNaoAlteraException, BicicletaSemBateriaException, IdBicicletaNulaException, BicicletaNaoExisteException, AtributoNaoExisteException {
+    public String getAtributoBicicleta(String bicicleta, String atributo) throws BikeshareException {
         return estacaoController.getAtributoBicicleta(bicicleta, atributo);
     }
 
@@ -116,15 +112,15 @@ public class Facade {
     // US7 - Consulta de disponibilidade
     // =====================================================================
 
-    public String getBicicletasDisponiveis(String estacao) throws EstacaoNaoExisteException, IdEstacaoNulaException {
+    public String getBicicletasDisponiveis(String estacao) throws BikeshareException {
         return estacaoController.getBicicletasDisponiveis(estacao);
     }
 
-    public String getVagasDisponiveis(String estacao) throws EstacaoNaoExisteException, IdEstacaoNulaException {
+    public String getVagasDisponiveis(String estacao) throws BikeshareException {
         return estacaoController.obterVagasDisponiveis(estacao);
     }
 
-    public String getEstadoBicicleta(String bicicleta) throws BicicletaNaoExisteException, IdBicicletaNulaException {
+    public String getEstadoBicicleta(String bicicleta) throws BikeshareException {
         return estacaoController.getEstadoBicicleta(bicicleta);
     }
 
@@ -132,7 +128,7 @@ public class Facade {
     // US8 - Retirada de bicicleta
     // =====================================================================
 
-    public String retirarBicicleta(String usuario, String estacao, String bicicleta, String data) throws BicicletaNaoExisteException, SaldoInsuficienteException, IdNaoNuloException, AluguelAtivoException, BicicletaNaoEstacaoException, BateriaInsuficienteException, UsuarioNaoExisteException, DataNaoNulaException, IdBicicletaNulaException, SemMetodoPagamentoException, EstacaoNaoExisteException, DataInvalidaException, IdEstacaoNulaException, UsuarioInadimplenteException {
+    public String retirarBicicleta(String usuario, String estacao, String bicicleta, String data) throws BikeshareException {
         return aluguelController.retirarBicicleta(usuario, estacao, bicicleta, data);
     }
 
@@ -140,7 +136,7 @@ public class Facade {
     // US9 - Devolucao de bicicleta
     // =====================================================================
 
-    public void devolverBicicleta(String aluguel, String estacao, String data) throws SaldoInsuficienteException, IdNaoNuloException, DataAnteriorARetiradaException, EstacaoCheiaException, UsuarioNaoExisteException, DataNaoNulaException, IdAluguelNaoNulaException, IdBicicletaNulaException, EstacaoSemVagaException, AluguelNaoAndamentoException, NaoSaldoException, AluguelNaoExisteException, EstacaoNaoExisteException, DataInvalidaException, IdEstacaoNulaException {
+    public void devolverBicicleta(String aluguel, String estacao, String data) throws BikeshareException {
         aluguelController.devolverBicicleta(aluguel, estacao, data);
     }
 
@@ -156,7 +152,7 @@ public class Facade {
         throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
     }
 
-    public String getAtributoAluguel(String aluguel, String atributo) throws AtributoInvalidoException, AluguelAtivoException, IdAluguelNaoNulaException, AtributoNaoExisteException, AluguelNaoExisteException, AluguelEmAndamentoException {
+    public String getAtributoAluguel(String aluguel, String atributo) throws BikeshareException {
         return aluguelController.getAtributoAluguel(aluguel, atributo);
     }
 
@@ -212,11 +208,11 @@ public class Facade {
     // Ciclo de vida do sistema
     // =====================================================================
 
-    public void zerarSistema() throws PersistenciaException {
+    public void zerarSistema() throws BikeshareException {
         data.zerarSistema();
     }
 
-    public void encerrarSistema() throws PersistenciaException {
+    public void encerrarSistema() throws BikeshareException {
         data.salvarDados();
     }
 }

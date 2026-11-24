@@ -1,7 +1,7 @@
 package br.ufal.ic.p2.bikeshare.models.stations;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaNaoEstacaoException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoSemVagaException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.BicicletaNaoEstacaoException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.EstacaoSemVagaException;
 import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class Station {
     private String nome;
     private String endereco;
     private int capacidade;
-    List<Bike> bicicletas = new ArrayList<>();
+    private List<Bike> bicicletas = new ArrayList<>();
 
     public Station(String nome, String endereco, int capacidade) {
         this.nome = nome;
@@ -45,11 +45,15 @@ public class Station {
     }
 
     public void addBike(Bike nova) throws EstacaoSemVagaException {
-        if(calcularVagasDisponiveis() > 0) {
+        if (calcularVagasDisponiveis() > 0) {
             bicicletas.add(nova);
-        }else {
+        } else {
             throw new EstacaoSemVagaException();
         }
+    }
+
+    public boolean contemBicicleta(Bike bike) {
+        return bicicletas.contains(bike);
     }
 
     public void removerBike(Bike bike) throws BicicletaNaoEstacaoException {
@@ -72,15 +76,17 @@ public class Station {
         }
         return disponiveis;
     }
+
     //Xml
 
-    public Station(){ }
+    public Station() {
+    }
 
     public List<Bike> getBicicletas() {
         return bicicletas;
     }
 
     public void setBicicletas(List<Bike> bicicletas) {
-        this.bicicletas = bicicletas;
+        this.bicicletas = (bicicletas == null) ? new ArrayList<>() : new ArrayList<>(bicicletas);
     }
 }

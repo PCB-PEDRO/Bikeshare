@@ -1,28 +1,16 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
+import br.ufal.ic.p2.bikeshare.exception.negocio.*;
+import br.ufal.ic.p2.bikeshare.models.Users.User;
 
 public abstract class Payment {
 
-    private String tipo;
-
-    public Payment(String tipo) {
-        this.tipo = tipo;
+    public Payment() {
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
+    public abstract String getTipo();
 
     public String obterChave() throws NaoPixException {
-        throw new NaoPixException();
-    }
-
-    public void attChave(String chave) throws NaoPixException {
         throw new NaoPixException();
     }
 
@@ -30,31 +18,19 @@ public abstract class Payment {
         throw new NaoCartaoException();
     }
 
-    public void attNumero(String numero) throws NaoCartaoException {
-        throw new NaoCartaoException();
-    }
-
     public String obterValidade() throws NaoCartaoException {
         throw new NaoCartaoException();
     }
 
-    public void attValidade(String validade) throws NaoCartaoException {
-        throw new NaoCartaoException();
-    }
-
-    public Double obterSaldo() throws NaoSaldoException {
+    public double obterSaldo(User usuario) throws NaoSaldoException {
         throw new NaoSaldoException();
     }
 
-    public void attSaldo(Double saldo) throws NaoSaldoException {
+    public void adicionarSaldo(User usuario, double valorAdicional) throws NaoSaldoException {
         throw new NaoSaldoException();
     }
 
-    public boolean validarParaAluguel() throws SemMetodoPagamentoException, SaldoInsuficienteException {
-        throw new SemMetodoPagamentoException();
-    }
+    public abstract void validarParaAluguel(User usuario) throws SemMetodoPagamentoException, SaldoInsuficienteException;
 
-    //XML
-
-    public Payment(){ }
+    public abstract void cobrar(User usuario, double valor) throws SemMetodoPagamentoException, SaldoInsuficienteException;
 }

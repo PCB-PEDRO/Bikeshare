@@ -1,10 +1,11 @@
 package br.ufal.ic.p2.bikeshare.controller;
 
 import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.*;
+import br.ufal.ic.p2.bikeshare.exception.BikeshareException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.numericos.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.tipos.*;
 import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.Users.UserPf;
 import br.ufal.ic.p2.bikeshare.models.Users.UserPj;
@@ -12,59 +13,58 @@ import br.ufal.ic.p2.bikeshare.models.pay.PayBalance;
 import br.ufal.ic.p2.bikeshare.models.pay.PayCard;
 import br.ufal.ic.p2.bikeshare.models.pay.PayPix;
 import br.ufal.ic.p2.bikeshare.models.pay.Payment;
+import br.ufal.ic.p2.bikeshare.models.planos.Plano;
+import br.ufal.ic.p2.bikeshare.models.planos.PlanoAssinante;
+import br.ufal.ic.p2.bikeshare.models.planos.PlanoAvulso;
 import br.ufal.ic.p2.bikeshare.utils.ValidadorUtils;
 
 public class UserController {
     private DataSystem data;
 
-    public UserController (DataSystem data){
+    public UserController(DataSystem data) {
         this.data = data;
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
-        email = validarDados( nome, email, senha, tipo, cpf,"pessoaFisica");
-        User novo = new UserPf( nome, email, senha, tipo, cpf, "avulso", 0.0);
-        String id = data.addUser(novo);
-
-        return id;
-    }
-
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, RazaoNaoNuloException, EmailIvalidoException, EmailCadastradoException {
-        email = validarDados( nome, email, senha, tipo, cnpj, "pessoaJuridica");
-        ValidadorUtils.validaString(razaoSocial, RazaoNaoNuloException::new);
-
-        User novo = new UserPj( nome, email, senha, tipo, cnpj, razaoSocial, "avulso", 0.0);
-        String id = data.addUser(novo);
-
-        return id;
-    }
-
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano, String smensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf)
+            throws BikeshareException {
         email = validarDados(nome, email, senha, tipo, cpf, "pessoaFisica");
-        double mensalidade = validarPlano(plano, smensalidade);
-
-        User novo = new UserPf( nome, email, senha, tipo, cpf, plano, mensalidade);
-        String id = data.addUser(novo);
-
-        return id;
+        User novo = new UserPf(nome, email, senha, cpf, new PlanoAvulso());
+        return data.addUser(novo);
     }
 
-    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial, String plano, String smensalidade) throws NomeNaoNuloException, CnpjNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, TipoInvalidoException, RazaoNaoNuloException, PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, EmailIvalidoException, EmailCadastradoException, PlanoSemMensalidadeException {
-        email = validarDados(nome,email,senha,tipo,cnpj, "pessoaJuridica");
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial)
+            throws BikeshareException {
+        email = validarDados(nome, email, senha, tipo, cnpj, "pessoaJuridica");
         ValidadorUtils.validaString(razaoSocial, RazaoNaoNuloException::new);
-        double mensalidade = validarPlano(plano, smensalidade);
 
-
-        User novo = new UserPj(nome,email,senha,tipo,cnpj, razaoSocial, plano, mensalidade);
-        String id = data.addUser(novo);
-
-        return id;
+        User novo = new UserPj(nome, email, senha, cnpj, razaoSocial, new PlanoAvulso());
+        return data.addUser(novo);
     }
 
-    public String getAtributoUsuario(String usuario, String atributo, String valor1, String numero, String validade) throws UsuarioNaoExisteException, IdNaoNuloException, NaoPfException, NaoPjException, AtributoNaoExisteException, PlanoSemMensalidadeException, NaoPixException, NaoCartaoException, NaoSaldoException {
-        User consulta = data.obterUsuario(usuario);
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cpf, String plano,
+            String smensalidade) throws BikeshareException {
+        email = validarDados(nome, email, senha, tipo, cpf, "pessoaFisica");
+        Plano planoObj = criarPlano(plano, smensalidade);
 
-        switch (atributo){
+        User novo = new UserPf(nome, email, senha, cpf, planoObj);
+        return data.addUser(novo);
+    }
+
+    public String criarUsuario(String nome, String email, String senha, String tipo, String cnpj, String razaoSocial,
+            String plano, String smensalidade) throws BikeshareException {
+        email = validarDados(nome, email, senha, tipo, cnpj, "pessoaJuridica");
+        ValidadorUtils.validaString(razaoSocial, RazaoNaoNuloException::new);
+        Plano planoObj = criarPlano(plano, smensalidade);
+
+        User novo = new UserPj(nome, email, senha, cnpj, razaoSocial, planoObj);
+        return data.addUser(novo);
+    }
+
+    public String getAtributoUsuario(String usuario, String atributo) throws BikeshareException {
+        User consulta = data.obterUsuario(usuario);
+        ValidadorUtils.validaString(atributo, AtributoNaoExisteException::new);
+
+        switch (atributo) {
             case "nome":
                 return consulta.getNome();
             case "tipo":
@@ -86,24 +86,17 @@ public class UserController {
                 Payment metodo = consulta.getMetodoPagamento();
                 return metodo.getTipo();
             case "chavePix":
-                Payment metodo2 = consulta.getMetodoPagamento();
-                return metodo2.obterChave();
+                return consulta.getMetodoPagamento().obterChave();
             case "numeroCartao":
-                Payment metodo3 = consulta.getMetodoPagamento();
-                return metodo3.obterNumero();
+                return consulta.getMetodoPagamento().obterNumero();
             case "validadeCartao":
-                Payment metodo31 = consulta.getMetodoPagamento();
-                return metodo31.obterValidade();
+                return consulta.getMetodoPagamento().obterValidade();
             case "saldo":
-                Payment metodo4 = consulta.getMetodoPagamento();
-                return ValidadorUtils.formatarMoeda(metodo4.obterSaldo());
+                return ValidadorUtils.formatarMoeda(consulta.obterSaldo());
             case "plano":
-                return consulta.getPlano();
+                return consulta.obterNomePlano();
             case "mensalidade":
-                if(consulta.getPlano().equals("avulso")){
-                    throw new PlanoSemMensalidadeException();
-                }
-                return ValidadorUtils.formatarMoeda(consulta.getMensalidade());
+                return ValidadorUtils.formatarMoeda(consulta.obterMensalidade());
             case "cpf":
                 return consulta.obterCpf();
             case "cnpj":
@@ -115,23 +108,22 @@ public class UserController {
         }
     }
 
-    public String getUserEmail(String semail) throws UsuarioNaoExisteException, EmailCadastradoException, EmailNaoNuloException, EmailIvalidoException {
+    public String getUserEmail(String semail) throws BikeshareException {
         String email = validarEmail(semail);
 
         String id = data.getUserEmail(email);
 
-        if(id == null){
+        if (id == null) {
             throw new UsuarioNaoExisteException();
         }
         return id;
     }
 
-    public void alterarAtributos(String usuario, String atributo, String valor) throws UsuarioNaoExisteException, AtributoNaoExisteException, ValorNuloException, IdNaoNuloException, ValorNaoNegativaException, ValorNaoNumeroException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, NaoPfException, NaoPjException, AtributoInvalidoException, NomeNaoNuloException, EmailNaoNuloException, EmailCadastradoException, EmailIvalidoException, SenhaNaoNuloException, PlanoInvalidoException, AtributoNaoAlteraException, NaoSaldoException, MetodoPagamentoInvalidoException {
-
+    public void alterarAtributos(String usuario, String atributo, String valor) throws BikeshareException {
         User consulta = data.obterUsuario(usuario);
         ValidadorUtils.validaString(atributo, AtributoNaoAlteraException::new);
 
-        switch (atributo){
+        switch (atributo) {
             case "nome" -> {
                 ValidadorUtils.validaString(valor, NomeNaoNuloException::new);
                 consulta.setNome(valor);
@@ -144,83 +136,64 @@ public class UserController {
                 }
                 consulta.setEmail(email);
             }
-            case "senha"-> {
-                    ValidadorUtils.validaString(valor, SenhaNaoNuloException::new)
-                ;
+            case "senha" -> {
+                ValidadorUtils.validaString(valor, SenhaNaoNuloException::new);
                 consulta.setSenha(valor);
-                }
-            case "plano" -> {
-                if (valor.equals("assinante")) {
-                    if (!consulta.getPlano().equals("assinante")) {
-                        consulta.setMensalidade(30.0);
-                    }
-                    consulta.setPlano(valor);
-                } else if (valor.equals("avulso")) {
-                    consulta.setPlano(valor);
-                    consulta.setMensalidade(0.0);
-                } else {
-                    throw new PlanoInvalidoException();
-                }
             }
+            case "plano" -> consulta.setPlano(selecionarPlanoAlteracao(valor, consulta.getPlano()));
             case "mensalidade" -> {
-                double mensalidade = ValidadorUtils.conversaoDouble(valor, MensalidadeNaoNumeroException::new, MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
-                consulta.setMensalidade(mensalidade);
+                double mensalidade = ValidadorUtils.conversaoDouble(valor, MensalidadeNaoNumeroException::new,
+                        MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
+                consulta.getPlano().alterarMensalidade(mensalidade);
             }
-            case "cpf" -> {
-                consulta.attCpf(valor);
-            }
-            case "cnpj" -> {
-                consulta.attCnpj(valor);
-            }
-            case "razaoSocial" -> {
-                consulta.attRazao(valor);
-            }
+            case "cpf" -> consulta.attCpf(valor);
+            case "cnpj" -> consulta.attCnpj(valor);
+            case "razaoSocial" -> consulta.attRazao(valor);
             case "metodoPagamento" -> {
-                if (valor.equals("saldoPreCarregado")) {
-                    PayBalance novo = new PayBalance("saldoPreCarregado", consulta.getSaldo());
+                if ("saldoPreCarregado".equals(valor)) {
+                    PayBalance novo = new PayBalance();
                     consulta.setMetodoPagamento(novo);
                 } else {
                     throw new MetodoPagamentoInvalidoException();
                 }
             }
             case "saldo" -> {
-                double sal = consulta.obterSaldo();
-                sal += ValidadorUtils.conversaoDoublePositivo(valor, ValorNaoNumeroException::new, ValorNaoNegativaException::new, ValorNuloException::new);
-                consulta.attSaldo(sal);
+                consulta.obterSaldo();
+                double valorAdicional = ValidadorUtils.conversaoDoublePositivo(valor, ValorNaoNumeroException::new,
+                        ValorNaoNegativaException::new, ValorNuloException::new);
+                consulta.recarregarSaldo(valorAdicional);
             }
-            default -> {
-                throw new AtributoNaoAlteraException();
-            }
+            default -> throw new AtributoNaoAlteraException();
         }
     }
 
-    public void alterarMetodoPix(String usuario, String atributo, String valor1, String chave) throws AtributoNaoExisteException, ValorNuloException, ChaveNaoNuloException, UsuarioNaoExisteException, IdNaoNuloException, AtributoInvalidoException, AtributoNaoAlteraException, MetodoPagamentoInvalidoException {
-
+    public void alterarMetodoPix(String usuario, String atributo, String valor1, String chave)
+            throws BikeshareException {
         User consulta = data.obterUsuario(usuario);
 
-        if (atributo == null || !atributo.equals("metodoPagamento")) {
+        if (!"metodoPagamento".equals(atributo)) {
             throw new AtributoNaoAlteraException();
         }
 
-        if (valor1 == null || !valor1.equals("pix")) {
+        if (!"pix".equals(valor1)) {
             throw new MetodoPagamentoInvalidoException();
         }
 
         ValidadorUtils.validaString(chave, ChaveNaoNuloException::new);
 
-        PayPix novo = new PayPix("pix", chave);
+        PayPix novo = new PayPix(chave);
         consulta.setMetodoPagamento(novo);
     }
 
-    public void alterarMetodoCard(String usuario, String atributo, String valor1, String numero, String validade) throws UsuarioNaoExisteException, IdNaoNuloException, AtributoNaoAlteraException, MetodoPagamentoInvalidoException, CartaoNaoNuloException, ValidadeNaoNulaException, ValidadeInvalidaException {
-
+    public void alterarMetodoCard(String usuario, String atributo, String valor1, String numero, String validade)
+            throws BikeshareException {
         User consulta = data.obterUsuario(usuario);
 
-        if (atributo == null || !atributo.equals("metodoPagamento")) {
+        if (!"metodoPagamento".equals(atributo)) {
             throw new AtributoNaoAlteraException();
         }
 
-        if (valor1 == null || !valor1.equals("cartao")) {
+        if (!"cartao".equals(valor1)) {
             throw new MetodoPagamentoInvalidoException();
         }
 
@@ -228,68 +201,73 @@ public class UserController {
         ValidadorUtils.validaString(validade, ValidadeNaoNulaException::new);
         ValidadorUtils.validaValidadeCartao(validade);
 
-        PayCard novo = new PayCard("cartao", numero, validade);
+        PayCard novo = new PayCard(numero, validade);
         consulta.setMetodoPagamento(novo);
     }
 
-    public void removerUsuario(String id) throws UsuarioNaoExisteException, IdNaoNuloException, NaoRemoverException {
+    public void removerUsuario(String id) throws BikeshareException {
         User usuario = data.obterUsuario(id);
 
-        if(usuario.getAluguelAtivo() != null){
+        if (usuario.getAluguelAtivo() != null) {
             throw new NaoRemoverException();
-        } else{
+        } else {
             data.removerUser(id);
         }
     }
 
-    private String validarDados(String nome, String email, String senha, String tipo, String cpfOuCnpj, String tipoEsperado) throws NomeNaoNuloException, EmailNaoNuloException, SenhaNaoNuloException, CpfNaoNuloException, CnpjNaoNuloException, TipoInvalidoException, EmailIvalidoException, EmailCadastradoException {
-
-        ValidadorUtils.validaString(nome,NomeNaoNuloException::new);
+    private String validarDados(String nome, String email, String senha, String tipo, String cpfOuCnpj,
+            String tipoEsperado) throws BikeshareException {
+        ValidadorUtils.validaString(nome, NomeNaoNuloException::new);
         email = validarEmail(email);
 
-        if(data.getUserEmail(email) != null){
+        if (data.getUserEmail(email) != null) {
             throw new EmailCadastradoException();
         }
 
         ValidadorUtils.validaString(senha, SenhaNaoNuloException::new);
-        if(tipo.equals("pessoaFisica")){
+        if ("pessoaFisica".equals(tipo)) {
             ValidadorUtils.validaString(cpfOuCnpj, CpfNaoNuloException::new);
-        }
-        else if(tipo.equals("pessoaJuridica")){
-            ValidadorUtils.validaString(cpfOuCnpj, CnpjNaoNuloException::new );
+        } else if ("pessoaJuridica".equals(tipo)) {
+            ValidadorUtils.validaString(cpfOuCnpj, CnpjNaoNuloException::new);
         }
 
-        if(!tipo.equals(tipoEsperado)){
+        if (!tipoEsperado.equals(tipo)) {
             throw new TipoInvalidoException();
         }
 
         return email;
     }
-    private String validarEmail(String email) throws EmailNaoNuloException, EmailIvalidoException, EmailCadastradoException {
+
+    private String validarEmail(String email) throws BikeshareException {
         ValidadorUtils.validaString(email, EmailNaoNuloException::new);
-
-        email = ValidadorUtils.validaEmail(email);
-
-        return email;
+        return ValidadorUtils.validaEmail(email);
     }
-    private double validarPlano(String plano, String smensalidade) throws PlanoNaoNuloException, PlanoInvalidoException, MensalidadeNaoNuloException, MensalidadeNaoNegativaException, MensalidadeNaoNumeroException, PlanoSemMensalidadeException {
-        ValidadorUtils.validaString(plano, PlanoInvalidoException::new);
 
-        if(plano.equals("avulso")){
+    private Plano selecionarPlanoAlteracao(String nomePlano, Plano planoAtual) throws PlanoInvalidoException {
+        ValidadorUtils.validaString(nomePlano, PlanoInvalidoException::new);
+        return switch (nomePlano) {
+            case "assinante" -> planoAtual.migrarParaAssinante();
+            case "avulso" -> new PlanoAvulso();
+            default -> throw new PlanoInvalidoException();
+        };
+    }
 
-            if (smensalidade != null && !smensalidade.isBlank() && !smensalidade.equals("0.0") && !smensalidade.equals("0")){
-
-                throw new PlanoSemMensalidadeException();
+    private Plano criarPlano(String nomePlano, String smensalidade) throws BikeshareException {
+        ValidadorUtils.validaString(nomePlano, PlanoInvalidoException::new);
+        return switch (nomePlano) {
+            case "avulso" -> {
+                if (smensalidade != null && !smensalidade.isBlank() && !"0.0".equals(smensalidade)
+                        && !"0".equals(smensalidade)) {
+                    throw new PlanoSemMensalidadeException();
+                }
+                yield new PlanoAvulso();
             }
-
-            return 0.0;
-
-        } else if(plano.equals("assinante")){
-
-            return ValidadorUtils.conversaoDouble(smensalidade, MensalidadeNaoNumeroException::new, MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
-
-        } else {
-            throw new PlanoInvalidoException();
-        }
+            case "assinante" -> {
+                double mensalidade = ValidadorUtils.conversaoDouble(smensalidade, MensalidadeNaoNumeroException::new,
+                        MensalidadeNaoNegativaException::new, MensalidadeNaoNuloException::new);
+                yield new PlanoAssinante(mensalidade);
+            }
+            default -> throw new PlanoInvalidoException();
+        };
     }
 }

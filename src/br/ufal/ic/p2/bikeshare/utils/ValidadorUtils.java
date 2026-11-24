@@ -1,16 +1,20 @@
 package br.ufal.ic.p2.bikeshare.utils;
 
-import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.ValidadeInvalidaException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.numericos.ValidadeInvalidaException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.tipos.EmailInvalidoException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public class ValidadorUtils {
+
+    private static final Locale LOCALE_BR = Locale.of("pt", "BR");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu H:mm").withResolverStyle(ResolverStyle.STRICT);
 
     public static <T extends Exception> void validaString(String valor, Supplier<T> exceptionSupplier) throws T {
         if (valor == null || valor.isBlank()) {
@@ -43,13 +47,13 @@ public class ValidadorUtils {
     }
 
     public static String formatarMoeda(double valor) {
-        return String.format("%.2f", valor).replace(".", ",");
+        return String.format(LOCALE_BR, "%.2f", valor);
     }
 
-    public static String validaEmail(String email) throws EmailIvalidoException {
+    public static String validaEmail(String email) throws EmailInvalidoException {
         String emailNormalizado = email.trim().toLowerCase();
         if (!emailNormalizado.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-            throw new EmailIvalidoException();
+            throw new EmailInvalidoException();
         }
         return emailNormalizado;
     }
@@ -79,8 +83,6 @@ public class ValidadorUtils {
         return num;
     }
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu H:mm").withResolverStyle(ResolverStyle.STRICT);
-
     public static <T1 extends Exception, T2 extends Exception> String validarData(
             String data, Supplier<T1> nuloException, Supplier<T2> invalidaException) throws T1, T2 {
         validaString(data, nuloException);
@@ -104,4 +106,3 @@ public class ValidadorUtils {
         return minutos;
     }
 }
-

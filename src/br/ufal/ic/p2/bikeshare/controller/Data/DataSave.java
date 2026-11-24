@@ -6,22 +6,21 @@ import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DataSave {
 
     private Map<String, User> usuarios = new LinkedHashMap<>();
-    private int proximoid;
-    private Map<String, Station> estacoes;
+    private int proximoIdUsuario = 1;
+    private Map<String, Station> estacoes = new LinkedHashMap<>();
     private int proximoIdEstacao = 1;
-    private Map<String, Bike> bicicletas;
-    private Map<String, Aluguel> alugueis;
+    private Map<String, Bike> bicicletas = new LinkedHashMap<>();
+    private Map<String, Aluguel> alugueis = new LinkedHashMap<>();
     private int proximoIdAluguel = 1;
 
-    public DataSave(Map<String, User> usuarios, int proximoid, Map<String, Station> estacoes, int proximoIdEstacao, Map<String, Bike> bicicletas, Map<String, Aluguel> alugueis, int proximoIdAluguel) {
+    public DataSave(Map<String, User> usuarios, int proximoIdUsuario, Map<String, Station> estacoes, int proximoIdEstacao, Map<String, Bike> bicicletas, Map<String, Aluguel> alugueis, int proximoIdAluguel) {
         this.usuarios = new LinkedHashMap<>(usuarios);
-        this.proximoid = proximoid;
+        this.proximoIdUsuario = proximoIdUsuario;
         this.estacoes = new LinkedHashMap<>(estacoes);
         this.proximoIdEstacao = proximoIdEstacao;
         this.bicicletas = new LinkedHashMap<>(bicicletas);
@@ -37,15 +36,15 @@ public class DataSave {
     }
 
     public void setUsuarios(Map<String, User> usuarios) {
-        this.usuarios = usuarios;
+        this.usuarios = (usuarios == null) ? new LinkedHashMap<>() : usuarios;
     }
 
-    public int getProximoid() {
-        return proximoid;
+    public int getProximoIdUsuario() {
+        return proximoIdUsuario;
     }
 
-    public void setProximoid(int proximoid) {
-        this.proximoid = proximoid;
+    public void setProximoIdUsuario(int proximoIdUsuario) {
+        this.proximoIdUsuario = proximoIdUsuario;
     }
 
     public Map<String, Station> getEstacoes() {
@@ -53,7 +52,7 @@ public class DataSave {
     }
 
     public void setEstacoes(Map<String, Station> estacoes) {
-        this.estacoes = estacoes;
+        this.estacoes = (estacoes == null) ? new LinkedHashMap<>() : estacoes;
     }
 
     public int getProximoIdEstacao() {
@@ -69,7 +68,7 @@ public class DataSave {
     }
 
     public void setBicicletas(Map<String, Bike> bicicletas) {
-        this.bicicletas = bicicletas;
+        this.bicicletas = (bicicletas == null) ? new LinkedHashMap<>() : bicicletas;
     }
 
     public Map<String, Aluguel> getAlugueis() {
@@ -77,7 +76,7 @@ public class DataSave {
     }
 
     public void setAlugueis(Map<String, Aluguel> alugueis) {
-        this.alugueis = alugueis;
+        this.alugueis = (alugueis == null) ? new LinkedHashMap<>() : alugueis;
     }
 
     public int getProximoIdAluguel() {

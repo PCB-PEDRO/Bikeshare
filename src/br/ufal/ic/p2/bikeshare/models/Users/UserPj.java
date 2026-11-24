@@ -1,13 +1,20 @@
 package br.ufal.ic.p2.bikeshare.models.Users;
 
-public class UserPj extends User{
+import br.ufal.ic.p2.bikeshare.models.planos.Plano;
+
+public class UserPj extends User {
     private String cnpj;
     private String razao;
 
-    public UserPj(String nome, String email, String senha, String tipo, String CNPJ, String razao, String plano, Double mensalidade) {
-        super(nome, email, senha, tipo, plano, mensalidade);
-        this.cnpj = CNPJ;
+    public UserPj(String nome, String email, String senha, String cnpj, String razao, Plano plano) {
+        super(nome, email, senha, plano);
+        this.cnpj = cnpj;
         this.razao = razao;
+    }
+
+    @Override
+    public String getTipo() {
+        return "pessoaJuridica";
     }
 
     @Override
@@ -32,10 +39,23 @@ public class UserPj extends User{
 
     //xml
 
-    public UserPj(){super();}
+    public UserPj() {
+        super();
+    }
 
-    public String getCnpj() { return cnpj; }
-    public void setCnpj(String cnpj) { this.cnpj = cnpj; }
-    public String getRazao() { return razao; }
-    public void setRazao(String razao) { this.razao = razao; }
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getRazao() {
+        return razao;
+    }
+
+    public void setRazao(String razao) {
+        this.razao = razao;
+    }
 }

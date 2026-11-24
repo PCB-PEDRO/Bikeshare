@@ -1,47 +1,41 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.SaldoInsuficienteException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.SemMetodoPagamentoException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.SaldoInsuficienteException;
+import br.ufal.ic.p2.bikeshare.models.Users.User;
 
-public class PayBalance extends Payment{
+public class PayBalance extends Payment {
 
-    private Double saldo;
-
-    public PayBalance(String tipo, double saldo) {
-        super(tipo);
-        this.saldo = saldo;
+    public PayBalance() {
+        super();
     }
 
     @Override
-    public Double obterSaldo(){
-        return saldo;
+    public String getTipo() {
+        return "saldoPreCarregado";
     }
 
     @Override
-    public void attSaldo(Double saldo){
-        this.saldo = saldo;
+    public double obterSaldo(User usuario) {
+        return usuario.getSaldo();
     }
 
     @Override
-    public boolean validarParaAluguel() throws SaldoInsuficienteException {
-        if(this.saldo > 0){
-            return true;
-        }else {
+    public void adicionarSaldo(User usuario, double valorAdicional) {
+        usuario.setSaldo(usuario.getSaldo() + valorAdicional);
+    }
+
+    @Override
+    public void validarParaAluguel(User usuario) throws SaldoInsuficienteException {
+        if (usuario.getSaldo() <= 0) {
             throw new SaldoInsuficienteException();
         }
     }
 
-    //Xml
-
-
-    public Double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
-    }
-
-    public PayBalance() {
+    @Override
+    public void cobrar(User usuario, double valor) throws SaldoInsuficienteException {
+        if (usuario.getSaldo() < valor) {
+            throw new SaldoInsuficienteException();
+        }
+        usuario.setSaldo(usuario.getSaldo() - valor);
     }
 }

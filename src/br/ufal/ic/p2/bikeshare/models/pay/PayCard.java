@@ -1,48 +1,45 @@
 package br.ufal.ic.p2.bikeshare.models.pay;
 
-import br.ufal.ic.p2.bikeshare.exeption.negocio.SemMetodoPagamentoException;
+import br.ufal.ic.p2.bikeshare.models.Users.User;
 
-public class PayCard extends Payment{
+public class PayCard extends Payment {
 
     private String numero;
     private String validade;
 
-    public PayCard(String tipo, String numero, String validade) {
-        super(tipo);
+    public PayCard(String numero, String validade) {
+        super();
         this.numero = numero;
         this.validade = validade;
     }
 
-
+    @Override
+    public String getTipo() {
+        return "cartao";
+    }
 
     @Override
-    public String obterNumero(){
+    public String obterNumero() {
         return numero;
     }
 
     @Override
-    public void attNumero(String numero){
-        this.numero = numero;
-    }
-
-    @Override
-    public String obterValidade(){
+    public String obterValidade() {
         return validade;
     }
 
     @Override
-    public void attValidade(String validade){
-        this.validade = validade;
+    public void validarParaAluguel(User usuario) {
     }
 
     @Override
-    public boolean validarParaAluguel() throws SemMetodoPagamentoException {
-        return true;
+    public void cobrar(User usuario, double valor) {
     }
 
-
     //Xml
+
     public PayCard() {
+        super();
     }
 
     public String getNumero() {

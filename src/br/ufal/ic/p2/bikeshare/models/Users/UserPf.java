@@ -1,14 +1,20 @@
 package br.ufal.ic.p2.bikeshare.models.Users;
 
-public class UserPf extends User{
+import br.ufal.ic.p2.bikeshare.models.planos.Plano;
+
+public class UserPf extends User {
 
     private String cpf;
 
-    public UserPf(String nome, String email, String senha, String tipo, String cpf, String plano, Double mensalidade){
-        super(nome,email,senha,tipo,plano,mensalidade);
+    public UserPf(String nome, String email, String senha, String cpf, Plano plano) {
+        super(nome, email, senha, plano);
         this.cpf = cpf;
     }
 
+    @Override
+    public String getTipo() {
+        return "pessoaFisica";
+    }
 
     @Override
     public String obterCpf() {
@@ -22,7 +28,9 @@ public class UserPf extends User{
 
     //XML
 
-    public UserPf(){super();}
+    public UserPf() {
+        super();
+    }
 
     public String getCpf() {
         return cpf;
@@ -31,7 +39,4 @@ public class UserPf extends User{
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-
-
-
 }

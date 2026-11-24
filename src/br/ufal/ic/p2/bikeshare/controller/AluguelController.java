@@ -1,149 +1,105 @@
 package br.ufal.ic.p2.bikeshare.controller;
 
 import br.ufal.ic.p2.bikeshare.controller.Data.DataSystem;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.nulos.*;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.AtributoNaoExisteException;
-import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.DataInvalidaException;
+import br.ufal.ic.p2.bikeshare.exception.BikeshareException;
+import br.ufal.ic.p2.bikeshare.exception.negocio.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.nulos.*;
+import br.ufal.ic.p2.bikeshare.exception.validacao.tipos.AtributoNaoExisteException;
+import br.ufal.ic.p2.bikeshare.exception.validacao.tipos.DataInvalidaException;
 import br.ufal.ic.p2.bikeshare.models.Alugueis.Aluguel;
 import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 import br.ufal.ic.p2.bikeshare.models.Users.User;
 import br.ufal.ic.p2.bikeshare.models.stations.Station;
 import br.ufal.ic.p2.bikeshare.utils.ValidadorUtils;
 
-import java.util.Locale;
-
 public class AluguelController {
+    private static final String ESTADO_EM_ANDAMENTO = "emAndamento";
+    private static final String ESTADO_FINALIZADO = "finalizado";
+    private static final String ESTADO_CANCELADO = "cancelado";
+    private static final String ESTADO_EXPIRADO = "expirado";
+    private static final String BIKE_DISPONIVEL = "disponivel";
+    private static final String BIKE_EM_USO = "emUso";
+    private static final String BIKE_EM_MANUTENCAO = "emManutencao";
+    private static final String ESTACAO_NENHUMA = "nenhuma";
+    private static final String USUARIO_INADIMPLENTE = "inadimplente";
+    private static final String ALUGUEL_NENHUM = "nenhum";
+
+    private static final long MINUTOS_LIMITE_EXPIRACAO = 1440L;
+    private static final long MINUTOS_CARENCIA_CANCELAMENTO = 2L;
+    private static final double MULTA_ATRASO_EXPIRACAO = 10.0;
+
     private DataSystem data;
 
-    public AluguelController(DataSystem data){
+    public AluguelController(DataSystem data) {
         this.data = data;
     }
 
-    public String retirarBicicleta(String susuario, String sestacao, String sbicicleta, String sdataAluguel) throws UsuarioNaoExisteException, IdNaoNuloException, EstacaoNaoExisteException, IdEstacaoNulaException, BicicletaNaoExisteException, IdBicicletaNulaException, DataNaoNulaException, DataInvalidaException, AluguelAtivoException, BicicletaNaoEstacaoException, BateriaInsuficienteException, SaldoInsuficienteException, SemMetodoPagamentoException, UsuarioInadimplenteException {
+    public String retirarBicicleta(String susuario, String sestacao, String sbicicleta, String sdataAluguel) throws BikeshareException {
         User usuario = data.obterUsuario(susuario);
         Station estacao = data.obterEstacao(sestacao);
         Bike bicicleta = data.obterBike(sbicicleta);
-
-        if (bicicleta == null) {
-            throw new BicicletaNaoExisteException();
-        }
-
         String dataAluguel = ValidadorUtils.validarData(sdataAluguel, DataNaoNulaException::new, DataInvalidaException::new);
 
-        if (usuario.getAluguelAtivo() != null && !usuario.getAluguelAtivo().equals("nenhum")) {
-            throw new AluguelAtivoException();
-        }
-
-        if(usuario.getEstado().equals("inadimplente")){
+        if (USUARIO_INADIMPLENTE.equals(usuario.getEstado())) {
             throw new UsuarioInadimplenteException();
         }
 
-        if (!sestacao.equals(bicicleta.getEstacao())) {
+        if (usuario.getAluguelAtivo() != null && !ALUGUEL_NENHUM.equals(usuario.getAluguelAtivo())) {
+            throw new AluguelAtivoException();
+        }
+
+        if (!sestacao.equals(bicicleta.getEstacao()) || !estacao.contemBicicleta(bicicleta)) {
             throw new BicicletaNaoEstacaoException();
         }
 
         bicicleta.validarRetirada();
-        usuario.getMetodoPagamento().validarParaAluguel();
+        usuario.validarPagamentoParaAluguel();
 
+        estacao.removerBike(bicicleta);
         Aluguel novo = new Aluguel(susuario, sbicicleta, sestacao, dataAluguel);
         String id = data.addAluguel(novo);
 
-        estacao.removerBike(bicicleta);
-        bicicleta.setEstado("emUso");
-        bicicleta.setEstacao("nenhuma");
+        bicicleta.setEstado(BIKE_EM_USO);
+        bicicleta.setEstacao(ESTACAO_NENHUMA);
         usuario.setAluguelAtivo(id);
 
         return id;
     }
 
-    public void devolverBicicleta(String saluguel, String sestacao, String sdataDevolucao) throws IdAluguelNaoNulaException, AluguelNaoExisteException, EstacaoNaoExisteException, IdEstacaoNulaException, DataNaoNulaException, DataInvalidaException, AluguelNaoAndamentoException, EstacaoSemVagaException, EstacaoCheiaException, DataAnteriorARetiradaException, IdBicicletaNulaException, UsuarioNaoExisteException, IdNaoNuloException, SaldoInsuficienteException, NaoSaldoException {
+    public void devolverBicicleta(String saluguel, String sestacao, String sdataDevolucao) throws BikeshareException {
         Aluguel aluguel = data.obterAluguel(saluguel);
         Station estacao = data.obterEstacao(sestacao);
-        String dataFim = ValidadorUtils.validarData(sdataDevolucao,DataNaoNulaException::new, DataInvalidaException::new);
+        String dataFim = ValidadorUtils.validarData(sdataDevolucao, DataNaoNulaException::new, DataInvalidaException::new);
 
-        if(!aluguel.getEstado().equals("emAndamento")){
+        if (!ESTADO_EM_ANDAMENTO.equals(aluguel.getEstado())) {
             throw new AluguelNaoAndamentoException();
         }
 
-        if(estacao.calcularVagasDisponiveis() <= 0){
+        if (estacao.calcularVagasDisponiveis() <= 0) {
             throw new EstacaoCheiaException();
         }
 
         Bike bicicleta = data.obterBike(aluguel.getBicicleta());
         User usuario = data.obterUsuario(aluguel.getUsuario());
 
-
         long minutos = ValidadorUtils.calcularMinutos(aluguel.getInicio(), dataFim, DataAnteriorARetiradaException::new);
 
-        if(minutos >1440){
-            aluguel.setEstado("expirado");
-            aluguel.setValorCobrado(0.0);
-            aluguel.setFim(dataFim);
-            aluguel.setEstacaoDestino(sestacao);
-
-            bicicleta.setEstado("emManutencao");
-            bicicleta.setEstacao(sestacao);
-            estacao.addBike(bicicleta);
-
-            usuario.setEstado("inadimplente");
-            usuario.setTotalPendencias(usuario.getTotalPendencias() + 10);
-            usuario.setAluguelAtivo(null);
-        } else if (aluguel.getEstacaoOrigem().equals(sestacao) && minutos <= 2) {
-            aluguel.setEstado("cancelado");
-            aluguel.setValorCobrado(0.0);
-            aluguel.setFim(dataFim);
-            aluguel.setEstacaoDestino(sestacao);
-
-            bicicleta.setEstado("disponivel");
-            bicicleta.setEstacao(sestacao);
-            estacao.addBike(bicicleta);
-
-            usuario.setAluguelAtivo(null);
-        }else {
-            double valor = 0.0;
-
-            if (usuario.getPlano().equals("avulso")) {
-                valor = minutos * 0.50;
-            } else if (usuario.getPlano().equals("assinante")) {
-                long excedente = Math.max(0, minutos - 60);
-                valor = excedente * 0.30;
-            }
-
-            valor += bicicleta.calcularAdicional(minutos);
-
-            if(usuario.getMetodoPagamento().getTipo().equals("saldoPreCarregado")){
-                double saldo = usuario.getSaldo();
-                if(saldo < valor){
-                    throw new SaldoInsuficienteException();
-                } else {
-                    saldo -= valor;
-                    usuario.setSaldo(saldo);
-                    usuario.getMetodoPagamento().attSaldo(saldo);
-                }
-            }
-
-            aluguel.setEstado("finalizado");
-            aluguel.setFim(dataFim);
-            aluguel.setValorCobrado(valor);
-            aluguel.setEstacaoDestino(sestacao);
-
-            bicicleta.setEstado("disponivel");
-            estacao.addBike(bicicleta);
-
-            bicicleta.setEstacao(sestacao);
-
-            usuario.setAluguelAtivo(null);
+        if (minutos > MINUTOS_LIMITE_EXPIRACAO) {
+            concluirDevolucao(aluguel, estacao, sestacao, bicicleta, usuario, dataFim, ESTADO_EXPIRADO, BIKE_EM_MANUTENCAO, 0.0);
+            usuario.setEstado(USUARIO_INADIMPLENTE);
+            usuario.setTotalPendencias(usuario.getTotalPendencias() + MULTA_ATRASO_EXPIRACAO);
+        } else if (sestacao.equals(aluguel.getEstacaoOrigem()) && minutos <= MINUTOS_CARENCIA_CANCELAMENTO) {
+            concluirDevolucao(aluguel, estacao, sestacao, bicicleta, usuario, dataFim, ESTADO_CANCELADO, BIKE_DISPONIVEL, 0.0);
+        } else {
+            double valor = usuario.calcularTarifaPlano(minutos) + bicicleta.calcularAdicional(minutos);
+            usuario.cobrarAluguel(valor);
+            concluirDevolucao(aluguel, estacao, sestacao, bicicleta, usuario, dataFim, ESTADO_FINALIZADO, BIKE_DISPONIVEL, valor);
         }
-
-
     }
 
-    public String getAtributoAluguel(String aluguel, String atributo) throws AtributoInvalidoException, IdAluguelNaoNulaException, AluguelNaoExisteException, AtributoNaoExisteException, AluguelAtivoException, AluguelEmAndamentoException {
-        ValidadorUtils.validaString(aluguel, IdAluguelNaoNulaException::new);
-        ValidadorUtils.validaString(atributo, AtributoNaoExisteException::new);
-
+    public String getAtributoAluguel(String aluguel, String atributo) throws BikeshareException {
         Aluguel consulta = data.obterAluguel(aluguel);
+        ValidadorUtils.validaString(atributo, AtributoNaoExisteException::new);
 
         switch (atributo) {
             case "estado":
@@ -157,23 +113,37 @@ public class AluguelController {
             case "inicio":
                 return consulta.getInicio();
             case "fim":
-                if (consulta.getEstado().equals("emAndamento")) {
-                    throw new AluguelEmAndamentoException();
-                }
+                exigirAluguelEncerrado(consulta);
                 return consulta.getFim();
             case "estacaoDestino":
-                if (consulta.getEstado().equals("emAndamento")) {
-                    throw new AluguelEmAndamentoException();
-                }
+                exigirAluguelEncerrado(consulta);
                 return consulta.getEstacaoDestino();
             case "valorCobrado":
-                if (consulta.getEstado().equals("emAndamento")) {
-                    throw new AluguelEmAndamentoException();
-                }
-                return String.format(new Locale("pt", "BR"), "%.2f", consulta.getValorCobrado());
+                exigirAluguelEncerrado(consulta);
+                return ValidadorUtils.formatarMoeda(consulta.getValorCobrado());
             default:
                 throw new AtributoNaoExisteException();
         }
     }
 
+    private void concluirDevolucao(Aluguel aluguel, Station estacao, String idEstacaoDestino, Bike bicicleta,
+                                   User usuario, String dataFim, String estadoAluguel, String estadoBicicleta,
+                                   double valorCobrado) throws EstacaoSemVagaException {
+        estacao.addBike(bicicleta);
+        bicicleta.setEstado(estadoBicicleta);
+        bicicleta.setEstacao(idEstacaoDestino);
+
+        aluguel.setEstado(estadoAluguel);
+        aluguel.setFim(dataFim);
+        aluguel.setValorCobrado(valorCobrado);
+        aluguel.setEstacaoDestino(idEstacaoDestino);
+
+        usuario.setAluguelAtivo(null);
+    }
+
+    private void exigirAluguelEncerrado(Aluguel aluguel) throws AluguelEmAndamentoException {
+        if (ESTADO_EM_ANDAMENTO.equals(aluguel.getEstado())) {
+            throw new AluguelEmAndamentoException();
+        }
+    }
 }
