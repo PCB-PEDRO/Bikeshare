@@ -96,11 +96,11 @@ public class Facade {
     // US6 - Gestao de bicicletas na estacao
     // =====================================================================
 
-    public void adicionarBicicleta(String estacao, String bicicleta, String tipo) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoCheiaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
+    public void adicionarBicicleta(String estacao, String bicicleta, String tipo) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoSemVagaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
         estacaoController.adicionarBicicleta(estacao, bicicleta, tipo, null);
     }
 
-    public void adicionarBicicleta(String estacao, String bicicleta, String tipo, String nivelBateria) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoCheiaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
+    public void adicionarBicicleta(String estacao, String bicicleta, String tipo, String nivelBateria) throws BicicletaJaExisteException, BicicletaSemBateriaException, IdBicicletaNulaException, BateriaNulaException, TipoInvalidoException, EstacaoNaoExisteException, EstacaoSemVagaException, Bateria0a100Exception, BateriaNaoNumeroException, IdEstacaoNulaException {
         estacaoController.adicionarBicicleta(estacao, bicicleta, tipo, nivelBateria);
     }
 
@@ -132,7 +132,7 @@ public class Facade {
     // US8 - Retirada de bicicleta
     // =====================================================================
 
-    public String retirarBicicleta(String usuario, String estacao, String bicicleta, String data) throws BicicletaNaoExisteException, SaldoInsuficienteException, IdNaoNuloException, AluguelAtivoException, BicicletaNaoEstacaoException, BateriaInsuficienteException, UsuarioNaoExisteException, DataNaoNulaException, IdBicicletaNulaException, SemMetodoPagamentoException, EstacaoNaoExisteException, DataInvalidaException, IdEstacaoNulaException {
+    public String retirarBicicleta(String usuario, String estacao, String bicicleta, String data) throws BicicletaNaoExisteException, SaldoInsuficienteException, IdNaoNuloException, AluguelAtivoException, BicicletaNaoEstacaoException, BateriaInsuficienteException, UsuarioNaoExisteException, DataNaoNulaException, IdBicicletaNulaException, SemMetodoPagamentoException, EstacaoNaoExisteException, DataInvalidaException, IdEstacaoNulaException, UsuarioInadimplenteException {
         return aluguelController.retirarBicicleta(usuario, estacao, bicicleta, data);
     }
 
@@ -140,8 +140,8 @@ public class Facade {
     // US9 - Devolucao de bicicleta
     // =====================================================================
 
-    public void devolverBicicleta(String aluguel, String estacao, String data) {
-        throw new UnsupportedOperationException(AINDA_NAO_IMPLEMENTADO);
+    public void devolverBicicleta(String aluguel, String estacao, String data) throws SaldoInsuficienteException, IdNaoNuloException, DataAnteriorARetiradaException, EstacaoCheiaException, UsuarioNaoExisteException, DataNaoNulaException, IdAluguelNaoNulaException, IdBicicletaNulaException, EstacaoSemVagaException, AluguelNaoAndamentoException, NaoSaldoException, AluguelNaoExisteException, EstacaoNaoExisteException, DataInvalidaException, IdEstacaoNulaException {
+        aluguelController.devolverBicicleta(aluguel, estacao, data);
     }
 
     // =====================================================================

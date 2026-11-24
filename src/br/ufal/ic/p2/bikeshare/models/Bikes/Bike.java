@@ -50,6 +50,10 @@ public abstract class Bike {
 
     }
 
+    public double calcularAdicional(long minutos){
+        return 0.0;
+    }
+
     //Xml
 
     public Bike(){}

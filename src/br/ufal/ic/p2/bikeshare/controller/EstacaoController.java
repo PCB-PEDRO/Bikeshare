@@ -46,7 +46,7 @@ public class EstacaoController {
         return String.valueOf(bikes);
     }
 
-    public void adicionarBicicleta(String sestacao, String bicicleta, String tipo, String sbateria) throws EstacaoNaoExisteException, IdEstacaoNulaException, IdBicicletaNulaException, BicicletaJaExisteException, BicicletaSemBateriaException, BateriaNulaException, Bateria0a100Exception, BateriaNaoNumeroException, TipoInvalidoException, EstacaoCheiaException {
+    public void adicionarBicicleta(String sestacao, String bicicleta, String tipo, String sbateria) throws EstacaoNaoExisteException, IdEstacaoNulaException, IdBicicletaNulaException, BicicletaJaExisteException, BicicletaSemBateriaException, BateriaNulaException, Bateria0a100Exception, BateriaNaoNumeroException, TipoInvalidoException, EstacaoSemVagaException {
         Station estacao = data.obterEstacao(sestacao);
 
         ValidadorUtils.validaString(bicicleta, IdBicicletaNulaException::new);

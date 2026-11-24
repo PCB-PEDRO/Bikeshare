@@ -3,6 +3,7 @@ package br.ufal.ic.p2.bikeshare.utils;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.numericos.ValidadeInvalidaException;
 import br.ufal.ic.p2.bikeshare.exeption.validacao.tipos.EmailIvalidoException;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -89,6 +90,18 @@ public class ValidadorUtils {
         } catch (DateTimeParseException e) {
             throw invalidaException.get();
         }
+    }
+
+    public static <T extends Exception> long calcularMinutos(
+            String dataInicio, String dataFim, Supplier<T> dataAnteriorException) throws T {
+        LocalDateTime inicio = LocalDateTime.parse(dataInicio, FORMATTER);
+        LocalDateTime fim = LocalDateTime.parse(dataFim, FORMATTER);
+
+        long minutos = Duration.between(inicio, fim).toMinutes();
+        if (minutos < 0) {
+            throw dataAnteriorException.get();
+        }
+        return minutos;
     }
 }
 

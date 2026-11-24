@@ -1,7 +1,7 @@
 package br.ufal.ic.p2.bikeshare.models.stations;
 
 import br.ufal.ic.p2.bikeshare.exeption.negocio.BicicletaNaoEstacaoException;
-import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoCheiaException;
+import br.ufal.ic.p2.bikeshare.exeption.negocio.EstacaoSemVagaException;
 import br.ufal.ic.p2.bikeshare.models.Bikes.Bike;
 
 import java.util.ArrayList;
@@ -44,11 +44,11 @@ public class Station {
         this.capacidade = capacidade;
     }
 
-    public void addBike(Bike nova) throws EstacaoCheiaException {
+    public void addBike(Bike nova) throws EstacaoSemVagaException {
         if(calcularVagasDisponiveis() > 0) {
             bicicletas.add(nova);
         }else {
-            throw new EstacaoCheiaException();
+            throw new EstacaoSemVagaException();
         }
     }
 

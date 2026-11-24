@@ -27,6 +27,11 @@ public class BIkeEletric extends Bike{
         }
     }
 
+    @Override
+    public double calcularAdicional(long minutos){
+        return minutos * 0.20;
+    }
+
     //xml
     public BIkeEletric(){super();}
 
